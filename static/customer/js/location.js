@@ -16,13 +16,23 @@ console.log("========== LOCATION.JS LOADED ==========");
    ========================================================================== */
 
 const elements = {
+
     state: null,
     lga: null,
     city: null,
     address: null,
+
     latitude: null,
     longitude: null,
-    map: null
+
+    map: null,
+
+    coordinatePanel: null,
+
+    latitudeDisplay: null,
+
+    longitudeDisplay: null
+
 };
 
 /* ==========================================================================
@@ -188,17 +198,45 @@ function updateCoordinates(place) {
 
     console.log("Coordinates updated successfully.");
 
+    refreshCoordinateDisplay();
+
+}
+
+
+/* ==========================================================================
+   Coordinate Display
+   ========================================================================== */
+
+function refreshCoordinateDisplay() {
+
+    if (!elements.coordinatePanel) {
+        return;
+    }
+
+    elements.coordinatePanel.style.display = "block";
+
+    elements.latitudeDisplay.textContent =
+        elements.latitude.value;
+
+    elements.longitudeDisplay.textContent =
+        elements.longitude.value;
+
 }
 
 
 /* ==========================================================================
    Google Map
    ========================================================================== */
-
 function showMap(place) {
 
     if (!place.geometry) {
         return;
+    }
+
+    elements.map.style.display = "block";
+
+    if (!geocoder) {
+        geocoder = new google.maps.Geocoder();
     }
 
     if (!map) {
@@ -219,17 +257,13 @@ function showMap(place) {
 
     } else {
 
-        map.setCenter(place.geometry.location);
+        map.panTo(place.geometry.location);
 
     }
-
-    elements.map.style.display = "block";
 
     if (!marker) {
 
         marker = new google.maps.Marker({
-
-            position: place.geometry.location,
 
             map: map,
 
@@ -239,11 +273,84 @@ function showMap(place) {
 
         });
 
-    } else {
-
-        marker.setPosition(place.geometry.location);
+        marker.addListener("dragend", onMarkerDragged);
 
     }
+
+    marker.setPosition(place.geometry.location);
+
+}
+
+
+/* ==========================================================================
+   Marker Drag
+   ========================================================================== */
+
+function onMarkerDragged() {
+
+    const position = marker.getPosition();
+
+    elements.latitude.value = position.lat();
+
+    elements.longitude.value = position.lng();
+
+    refreshCoordinateDisplay();
+
+    reverseGeocode(position);
+
+    console.log("Marker moved.");
+
+    console.log("Latitude:", elements.latitude.value);
+
+    console.log("Longitude:", elements.longitude.value);
+
+}
+
+
+/* ==========================================================================
+   Reverse Geocoding
+   ========================================================================== */
+
+function reverseGeocode(position) {
+
+    if (!geocoder) {
+        return;
+    }
+
+    geocoder.geocode(
+        {
+            location: position
+        },
+        function (results, status) {
+
+            if (
+                status !== "OK" ||
+                !results ||
+                !results.length
+            ) {
+                console.warn("Reverse geocoding failed.");
+                return;
+            }
+
+            const result = results[0];
+
+            elements.address.value =
+                result.formatted_address;
+
+            if (elements.city) {
+
+                const city = result.address_components.find(component =>
+                    component.types.includes("locality") ||
+                    component.types.includes("administrative_area_level_2")
+                );
+
+                if (city) {
+                    elements.city.value = city.long_name;
+                }
+            }
+
+        }
+    );
 
 }
 
@@ -273,6 +380,9 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.longitude = document.getElementById("id_longitude");
     elements.city = document.getElementById("id_city");
     elements.map = document.getElementById("property-map");
+    elements.coordinatePanel = document.getElementById("coordinate-panel");
+    elements.latitudeDisplay = document.getElementById("latitude-display");
+    elements.longitudeDisplay = document.getElementById("longitude-display");
 
     initStateLGA();
     initGooglePlaces();
