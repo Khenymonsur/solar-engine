@@ -28,10 +28,10 @@ const elements = {
     map: null,
 
     coordinatePanel: null,
-
     latitudeDisplay: null,
+    longitudeDisplay: null,
 
-    longitudeDisplay: null
+    currentLocationButton: null
 
 };
 
@@ -174,6 +174,7 @@ function initGooglePlaces() {
         console.log("Longitude:", elements.longitude.value);
 
         updateCoordinates(place);
+        populateAddressFields(place.address_components);
         showMap(place);
 
     });
@@ -235,6 +236,11 @@ function showMap(place) {
 
     elements.map.style.display = "block";
 
+    // Trigger fade-in animation
+    requestAnimationFrame(() => {
+        elements.map.classList.add("show");
+    });
+
     if (!geocoder) {
         geocoder = new google.maps.Geocoder();
     }
@@ -278,6 +284,10 @@ function showMap(place) {
     }
 
     marker.setPosition(place.geometry.location);
+
+    map.panTo(place.geometry.location);
+
+    map.setZoom(18);
 
 }
 
@@ -334,20 +344,9 @@ function reverseGeocode(position) {
 
             const result = results[0];
 
-            elements.address.value =
-                result.formatted_address;
+            elements.address.value = result.formatted_address;
 
-            if (elements.city) {
-
-                const city = result.address_components.find(component =>
-                    component.types.includes("locality") ||
-                    component.types.includes("administrative_area_level_2")
-                );
-
-                if (city) {
-                    elements.city.value = city.long_name;
-                }
-            }
+            populateAddressFields(result.address_components);
 
         }
     );
@@ -355,6 +354,162 @@ function reverseGeocode(position) {
 }
 
 
+/* ==========================================================================
+   Current Location
+   ========================================================================== */
+
+function useCurrentLocation() {
+
+    if (!navigator.geolocation) {
+
+        alert("Geolocation is not supported by this browser.");
+
+        return;
+
+    }
+
+    navigator.geolocation.getCurrentPosition(
+
+        onCurrentLocationSuccess,
+
+        onCurrentLocationError,
+
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+        }
+
+    );
+
+}
+
+/*==========================================================================
+Success Callback
+ ===========================================================================*/
+
+ function onCurrentLocationSuccess(position) {
+
+    const latitude = position.coords.latitude;
+
+    const longitude = position.coords.longitude;
+
+    elements.latitude.value = latitude;
+    elements.longitude.value = longitude;
+
+    refreshCoordinateDisplay();
+
+    const location = new google.maps.LatLng(
+        latitude,
+        longitude
+    );
+
+    showMap({
+
+        geometry: {
+            location: location
+        }
+
+    });
+
+    reverseGeocode(location);
+
+}
+
+/*==========================================================================
+Error Callback
+ ===========================================================================*/
+
+
+function onCurrentLocationError(error) {
+
+    switch (error.code) {
+
+        case error.PERMISSION_DENIED:
+
+            alert("Location permission was denied.");
+
+            break;
+
+        case error.POSITION_UNAVAILABLE:
+
+            alert("Unable to determine your location.");
+
+            break;
+
+        case error.TIMEOUT:
+
+            alert("Location request timed out.");
+
+            break;
+
+        default:
+
+            alert("Unable to retrieve your location.");
+
+    }
+
+}
+
+
+/* ==========================================================================
+   Address Components
+   ========================================================================== */
+
+function populateAddressFields(addressComponents) {
+
+    if (!addressComponents) {
+        return;
+    }
+
+    const state = addressComponents.find(component =>
+        component.types.includes("administrative_area_level_1")
+    );
+
+    const lga = addressComponents.find(component =>
+        component.types.includes("administrative_area_level_2")
+    );
+
+    const city = addressComponents.find(component =>
+        component.types.includes("locality")
+    );
+
+    /* ------------------------------
+       State
+    ------------------------------ */
+
+    if (state && elements.state) {
+
+        elements.state.value = state.long_name;
+
+        populateLGAs(state.long_name);
+
+    }
+
+    /* ------------------------------
+       LGA
+    ------------------------------ */
+
+    if (lga && elements.lga) {
+
+        const optionExists = [...elements.lga.options]
+            .some(option => option.value === lga.long_name);
+
+        if (optionExists) {
+            elements.lga.value = lga.long_name;
+        }
+
+    }
+
+    /* ------------------------------
+       City
+    ------------------------------ */
+
+    if (city && elements.city) {
+        elements.city.value = city.long_name;
+    }
+
+}
 
 /* ==========================================================================
    Validation
@@ -383,6 +538,17 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.coordinatePanel = document.getElementById("coordinate-panel");
     elements.latitudeDisplay = document.getElementById("latitude-display");
     elements.longitudeDisplay = document.getElementById("longitude-display");
+    elements.currentLocationButton = document.getElementById("current-location-btn");
+
+
+    if (elements.currentLocationButton) {
+
+    elements.currentLocationButton.addEventListener(
+        "click",
+        useCurrentLocation
+    );
+
+}
 
     initStateLGA();
     initGooglePlaces();

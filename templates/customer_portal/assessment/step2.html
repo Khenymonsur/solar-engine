@@ -107,6 +107,19 @@ Energy Assessment | Your Property
 
                             {{ form.address }}
 
+                            <div class="d-flex justify-content-end mb-3">
+                                <button
+                                    type="button"
+                                    id="current-location-btn"
+                                    class="btn btn-outline-primary">
+
+                                    <i class="bi bi-crosshair"></i>
+                                    Use My Current Location
+                                </button>
+                                <br><br>
+
+                            </div>
+
                             <small class="text-muted">
                                 Start typing your address. Google Maps will suggest matching locations.
                             </small>
@@ -152,64 +165,41 @@ Energy Assessment | Your Property
             </div>
 
                     <div id="coordinate-panel"
-             class="card border-0 shadow-sm mt-3"
-             style="display:none;">
+                         class="card border-0 shadow-sm mt-3"
+                         style="display:none;">
 
-            <div class="card-body">
+                        <div class="card-body">
 
-                <h6 class="mb-3">
-                    <i class="bi bi-geo-alt-fill text-danger"></i>
-                    Property Coordinates
-                </h6>
+                            <h6 class="mb-3">
+                                <i class="bi bi-geo-alt-fill text-danger"></i>
+                                Property Coordinates
+                            </h6>
 
-                <div class="row">
+                            <div class="row text-center">
 
-                    <div class="col-md-6">
-                        <strong>Latitude:</strong>
-                        <span id="latitude-display">-</span>
-                    </div>
+                                <div class="col-md-6">
 
-                    <div class="col-md-6">
-                        <strong>Longitude:</strong>
-                        <span id="longitude-display">-</span>
-                    </div>
+                                    <small class="text-muted">Latitude</small>
 
-                </div>
+                                    <h5 id="latitude-display"></h5>
 
-            </div>
+                                </div>
 
-        </div>
+                                <div class="col-md-6">
 
-        </div>
+                                    <small class="text-muted">Longitude</small>
 
-                <div id="coordinate-panel"
-                     class="card border-0 shadow-sm mt-3"
-                     style="display:none;">
+                                    <h5 id="longitude-display"></h5>
 
-                    <div class="card-body">
+                                </div>
 
-                        <h6 class="mb-3">
-                            <i class="bi bi-geo-alt-fill text-danger"></i>
-                            Property Coordinates
-                        </h6>
-
-                        <div class="row">
-
-                            <div class="col-md-6">
-                                <strong>Latitude:</strong>
-                                <span id="latitude-display">-</span>
-                            </div>
-
-                            <div class="col-md-6">
-                                <strong>Longitude:</strong>
-                                <span id="longitude-display">-</span>
                             </div>
 
                         </div>
 
                     </div>
 
-                </div>
+        </div>
 
         <!-- Help -->
 

@@ -1,13 +1,17 @@
+{% load static %}
+
 <nav class="navbar navbar-expand-lg customer-navbar">
 
     <div class="container">
 
-        <a class="navbar-brand fw-bold"
+        <a class="navbar-brand d-flex align-items-center"
            href="{% url 'customer_portal:dashboard' %}">
 
-            <i class="bi bi-sun-fill text-warning me-2"></i>
-
-            Cloud Energy
+            <img
+                src="{% static 'images/Logo.png' %}"
+                alt="Cloud Energy"
+                height="48"
+                class="me-2">
 
         </a>
 
