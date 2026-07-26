@@ -1,4 +1,5 @@
-{% extends "layouts/base.html" %}
+{% extends "layouts/website_base.html" %}
+{% load static %}
 
 {% block title %}
 Cloud Energy Solar Engineering Platform
@@ -6,42 +7,59 @@ Cloud Energy Solar Engineering Platform
 
 {% block content %}
 
-<div class="container py-5">
 
-    <div class="text-center">
+<section class="hero-section">
 
-        <h1 class="display-4 fw-bold">
+    <div class="container">
 
-            Cloud Energy Solar Engineering Platform
+        <div class="row justify-content-center align-items-center text-center min-vh-100">
 
-        </h1>
+            <div class="hero-content">
 
-        <p class="lead">
+                <img src="{% static 'images/logo.png' %}"
+                     alt="Cloud Energy"
+                     class="hero-logo mb-4">
 
-            Design, monitor and manage professional solar PV solutions.
+                <span class="hero-badge">
+                    ☀ Trusted Solar Engineering Company
+                </span>
 
-        </p>
+                <h1 class="hero-title mt-4">
+                    Power Your Future with
+                    <span class="text-success">Intelligent Solar Engineering</span>
+                </h1>
 
-        <div class="mt-5">
+                <p class="hero-description mt-4">
+                    Cloud Energy delivers professional solar engineering solutions for
+                    homes and businesses through intelligent energy assessments,
+                    quality equipment, and flexible PAYGo financing.
+                </p>
 
-            <a href="/portal/"
-               class="btn btn-success btn-lg me-3">
+                <div class="hero-buttons">
 
-                Customer Portal
+                    <a href="{% url 'customer_portal:assessment_step1' %}"
+                       class="btn btn-success btn-lg px-5">
+                        Start Free Assessment
+                    </a>
 
-            </a>
+                    <a href="{% url 'customer_portal:login' %}"
+                       class="btn btn-outline-success btn-lg px-5">
+                        Customer Login
+                    </a>
 
-            <a href="/accounts/login/"
-               class="btn btn-dark btn-lg">
+                    <a href="{% url 'accounts:login' %}"
+                       class="btn btn-dark btn-lg px-5">
+                        Staff Login
+                    </a>
 
-                Staff Login
+                </div>
 
-            </a>
+            </div>
 
         </div>
 
     </div>
 
-</div>
+</section>
 
 {% endblock %}
