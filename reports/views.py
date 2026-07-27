@@ -10,18 +10,23 @@ from django.template.loader import render_to_string
 
 from weasyprint import HTML
 
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+)
 
 
-class ReportListView(ListView):
 
+class ReportListView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    ListView,
+):
+    permission_required = "audits.view_assessment"
     model = Assessment
-
     template_name = "reports/report_list.html"
-
     context_object_name = "reports"
-
     paginate_by = 15
-
     queryset = (
         Assessment.objects
         .select_related("customer")
@@ -30,12 +35,14 @@ class ReportListView(ListView):
 
 
 
-class ReportDetailView(DetailView):
-
+class ReportDetailView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DetailView,
+):
+    permission_required = "audits.view_assessment"
     model = Assessment
-
     template_name = "reports/report_detail.html"
-
     context_object_name = "assessment"
 
     def get_context_data(self, **kwargs):
@@ -67,12 +74,14 @@ class ReportDetailView(DetailView):
 
 
 
-class ReportPDFView(DetailView):
-
+class ReportPDFView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DetailView,
+):
+    permission_required = "audits.view_assessment"
     model = Assessment
-
     template_name = "reports/report_detail.html"
-
     context_object_name = "assessment"
 
     def get_context_data(self, **kwargs):

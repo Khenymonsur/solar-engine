@@ -5,6 +5,33 @@ app_name = "dashboard"
 
 urlpatterns = [
 
-    path("", views.dashboard, name="index"),
+    path(
+        "",
+        views.dashboard,
+        name="index"),
+
+    path(
+            "profile/",
+            views.ProfileView.as_view(),
+            name="profile",
+        ),
+
+        path(
+            "preferences/",
+            views.PreferenceView.as_view(),
+            name="preferences",
+        ),
+
+        path(
+            "analytics/",
+            views.AnalyticsView.as_view(),
+            name="analytics",
+        ),
+
+        path(
+            "settings/",
+            views.SettingsView.as_view(),
+            name="settings",
+        ),
 
 ]

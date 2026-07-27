@@ -1,0 +1,345 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+System Settings
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <form method="post" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        <!-- Header -->
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div>
+
+                <h2 class="fw-bold">
+
+                    <i class="bi bi-gear-fill me-2"></i>
+
+                    System Settings
+
+                </h2>
+
+                <p class="text-muted mb-0">
+
+                    Configure global application settings.
+
+                </p>
+
+            </div>
+
+            <button class="btn btn-success">
+
+                <i class="bi bi-check-circle me-2"></i>
+
+                Save Changes
+
+            </button>
+
+        </div>
+
+        <!-- Company Information -->
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-building me-2"></i>
+
+                    Company Information
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Company Name
+
+                        </label>
+
+                        {{ form.company_name }}
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Company Email
+
+                        </label>
+
+                        {{ form.company_email }}
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Company Phone
+
+                        </label>
+
+                        {{ form.company_phone }}
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Website
+
+                        </label>
+
+                        {{ form.website }}
+
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+
+                        <label class="form-label">
+
+                            Company Logo
+
+                        </label>
+
+                        {{ form.company_logo }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Business -->
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-cash-stack me-2"></i>
+
+                    Business Configuration
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+
+                            Currency
+
+                        </label>
+
+                        {{ form.currency }}
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+
+                            Quote Prefix
+
+                        </label>
+
+                        {{ form.quotation_prefix }}
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+
+                            Invoice Prefix
+
+                        </label>
+
+                        {{ form.invoice_prefix }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Engineering -->
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-lightning-charge me-2"></i>
+
+                    Engineering Defaults
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+
+                            Backup Hours
+
+                        </label>
+
+                        {{ form.default_backup_hours }}
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+
+                            Safety Margin (%)
+
+                        </label>
+
+                        {{ form.safety_margin }}
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+
+                            Voltage
+
+                        </label>
+
+                        {{ form.default_voltage }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Notifications -->
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-bell me-2"></i>
+
+                    Notifications
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="form-check">
+
+                    {{ form.email_notifications }}
+
+                    <label class="form-check-label">
+
+                        Enable Email Notifications
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- API Keys -->
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-plug me-2"></i>
+
+                    Integrations
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Google Maps API Key
+
+                        </label>
+
+                        {{ form.google_maps_api_key }}
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Weather API Key
+
+                        </label>
+
+                        {{ form.weather_api_key }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

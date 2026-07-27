@@ -19,11 +19,20 @@ from django.db.models import Sum
 from audits.models import Assessment
 from .services import QuotationService
 
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+)
 
 
 
 
-class QuotationListView(ListView):
+class QuotationListView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    ListView,
+):
+    permission_required = "quotations.view_quotation"
     model = Quotation
     template_name = "quotations/quotation_list.html"
     context_object_name = "quotations"
@@ -61,7 +70,12 @@ class QuotationListView(ListView):
         return context
 
 
-class QuotationDetailView(DetailView):
+class QuotationDetailView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DetailView,
+):
+    permission_required = "quotations.view_quotation"
     model = Quotation
     template_name = "quotations/quotation_detail.html"
     context_object_name = "quotation"
@@ -74,7 +88,12 @@ class QuotationDetailView(DetailView):
         return context
 
 
-class QuotationCreateView(CreateView):
+class QuotationCreateView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    CreateView,
+):
+    permission_required = "quotations.add_quotation"
     model = Quotation
     form_class = QuotationForm
     template_name = "quotations/quotation_form.html"
@@ -88,7 +107,12 @@ class QuotationCreateView(CreateView):
         return super().form_valid(form)
 
 
-class QuotationUpdateView(UpdateView):
+class QuotationUpdateView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    UpdateView,
+):
+    permission_required = "quotations.change_quotation"
     model = Quotation
     form_class = QuotationForm
     template_name = "quotations/quotation_form.html"
@@ -102,7 +126,12 @@ class QuotationUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class QuotationDeleteView(DeleteView):
+class QuotationDeleteView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DeleteView,
+):
+    permission_required = "quotations.delete_quotation"
     model = Quotation
     template_name = "quotations/quotation_confirm_delete.html"
     context_object_name = "quotation"
@@ -113,7 +142,12 @@ class QuotationDeleteView(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class GenerateQuotationView(View):
+class GenerateQuotationView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    View,
+):
+    permission_required = "quotations.change_quotation"
 
     def get(self, request, assessment_id):
 

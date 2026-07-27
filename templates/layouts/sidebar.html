@@ -39,6 +39,8 @@
 
         </li>
 
+        {% if perms.customers.view_customer %}
+
         <li>
 
             <a href="{% url 'customers:list' %}">
@@ -50,6 +52,12 @@
             </a>
 
         </li>
+
+        {% endif %}
+
+
+
+        {% if perms.audits.view_assessment %}
 
         <li>
 
@@ -63,6 +71,8 @@
 
         </li>
 
+        {% endif %}
+
         <!-- ====================== -->
         <!-- ENGINEERING -->
         <!-- ====================== -->
@@ -73,9 +83,11 @@
 
         </li>
 
+        {% if perms.equipment.view_manufacturer %}
+
         <li>
 
-             <a href="{% url 'equipment:manufacturers-list' %}">
+            <a href="{% url 'equipment:manufacturers-list' %}">
 
                 <i class="bi bi-building"></i>
 
@@ -85,9 +97,15 @@
 
         </li>
 
+        {% endif %}
+
+
+
+        {% if perms.equipment.view_appliance %}
+
         <li>
 
-             <a href="{% url 'equipment:appliance-list' %}">
+            <a href="{% url 'equipment:appliance-list' %}">
 
                 <i class="bi bi-lightbulb"></i>
 
@@ -96,6 +114,12 @@
             </a>
 
         </li>
+
+        {% endif %}
+
+
+
+        {% if perms.equipment.view_inverter %}
 
         <li>
 
@@ -109,9 +133,15 @@
 
         </li>
 
+        {% endif %}
+
+
+
+        {% if perms.equipment.view_battery %}
+
         <li>
 
-           <a href="{% url 'equipment:battery-list' %}">
+            <a href="{% url 'equipment:battery-list' %}">
 
                 <i class="bi bi-battery-charging"></i>
 
@@ -120,6 +150,12 @@
             </a>
 
         </li>
+
+        {% endif %}
+
+
+
+        {% if perms.equipment.view_panel %}
 
         <li>
 
@@ -133,6 +169,12 @@
 
         </li>
 
+        {% endif %}
+
+
+
+        {% if perms.equipment.view_controller %}
+
         <li>
 
             <a href="{% url 'equipment:controller-list' %}">
@@ -145,6 +187,8 @@
 
         </li>
 
+        {% endif %}
+
 
         <!-- ====================== -->
         <!-- BUSINESS -->
@@ -155,6 +199,8 @@
             BUSINESS
 
         </li>
+
+        {% if perms.quotations.view_quotation %}
 
         <li>
 
@@ -168,10 +214,14 @@
 
         </li>
 
+        {% endif %}
+
+
+        {% if perms.reports.view_report %}
+
         <li>
 
             <a href="{% url 'reports:list' %}">
-
 
                 <i class="bi bi-file-earmark-pdf"></i>
 
@@ -181,9 +231,14 @@
 
         </li>
 
+        {% endif %}
+
+
+        {% if perms.reports.view_report %}
+
         <li>
 
-            <a href="#">
+            <a href="{% url 'dashboard:analytics' %}">
 
                 <i class="bi bi-graph-up-arrow"></i>
 
@@ -193,9 +248,14 @@
 
         </li>
 
+        {% endif %}
+
+
+        {% if perms.dashboard.manage_system_settings %}
+
         <li>
 
-            <a href="#">
+            <a href="{% url 'dashboard:settings' %}">
 
                 <i class="bi bi-gear-fill"></i>
 
@@ -204,6 +264,8 @@
             </a>
 
         </li>
+
+        {% endif %}
 
     </ul>
 

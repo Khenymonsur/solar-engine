@@ -1,0 +1,373 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+Analytics
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold">
+
+                <i class="bi bi-bar-chart-line me-2"></i>
+
+                Analytics Dashboard
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                Monitor customer growth, assessments, engineering performance and business insights.
+
+            </p>
+
+        </div>
+
+        <button class="btn btn-success">
+
+            <i class="bi bi-download me-2"></i>
+
+            Export Report
+
+        </button>
+
+    </div>
+
+    <!-- KPI Cards -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+
+                        Customers
+
+                    </small>
+
+                    <h2 class="fw-bold mt-2">
+
+                        248
+
+                    </h2>
+
+                    <small class="text-success">
+
+                        ↑ 18% this month
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+
+                        Assessments
+
+                    </small>
+
+                    <h2 class="fw-bold mt-2">
+
+                        612
+
+                    </h2>
+
+                    <small class="text-success">
+
+                        ↑ 12% this month
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+
+                        Quotations
+
+                    </small>
+
+                    <h2 class="fw-bold mt-2">
+
+                        156
+
+                    </h2>
+
+                    <small class="text-success">
+
+                        ↑ 7% this month
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <small class="text-muted">
+
+                        Conversion Rate
+
+                    </small>
+
+                    <h2 class="fw-bold mt-2">
+
+                        63%
+
+                    </h2>
+
+                    <small class="text-success">
+
+                        Excellent
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Charts -->
+
+    <div class="row g-4">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header bg-white">
+
+                    <h5 class="mb-0">
+
+                        Monthly Assessments
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body text-center py-5">
+
+                    <i class="bi bi-bar-chart display-1 text-success"></i>
+
+                    <p class="text-muted mt-3">
+
+                        Chart will be connected using Chart.js
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header bg-white">
+
+                    <h5 class="mb-0">
+
+                        Assessment Status
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body text-center py-5">
+
+                    <i class="bi bi-pie-chart display-1 text-primary"></i>
+
+                    <p class="text-muted mt-3">
+
+                        Doughnut chart coming soon
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Bottom Cards -->
+
+    <div class="row g-4 mt-2">
+
+        <div class="col-lg-6">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header bg-white">
+
+                    <h5 class="mb-0">
+
+                        Top Selling Equipment
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-hover">
+
+                        <thead>
+
+                        <tr>
+
+                            <th>Equipment</th>
+
+                            <th>Count</th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr>
+
+                            <td>5kVA Hybrid Inverter</td>
+
+                            <td>84</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>750W Solar Panel</td>
+
+                            <td>142</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>200Ah Battery</td>
+
+                            <td>96</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>MPPT Controller</td>
+
+                            <td>58</td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header bg-white">
+
+                    <h5 class="mb-0">
+
+                        Recent Activity
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <ul class="list-group list-group-flush">
+
+                        <li class="list-group-item">
+
+                            New customer registered
+
+                        </li>
+
+                        <li class="list-group-item">
+
+                            Assessment completed
+
+                        </li>
+
+                        <li class="list-group-item">
+
+                            Quotation generated
+
+                        </li>
+
+                        <li class="list-group-item">
+
+                            Equipment catalogue updated
+
+                        </li>
+
+                        <li class="list-group-item">
+
+                            Staff member logged in
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

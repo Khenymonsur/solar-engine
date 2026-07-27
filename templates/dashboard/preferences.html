@@ -1,0 +1,299 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+Preferences
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <!-- Page Header -->
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div>
+
+                <h2 class="fw-bold">
+
+                    <i class="bi bi-sliders me-2"></i>
+
+                    Preferences
+
+                </h2>
+
+                <p class="text-muted mb-0">
+
+                    Customize your dashboard experience and account preferences.
+
+                </p>
+
+            </div>
+
+            <button type="submit" class="btn btn-success">
+
+                <i class="bi bi-check-circle me-2"></i>
+
+                Save Preferences
+
+            </button>
+
+        </div>
+
+        <!-- Appearance -->
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-palette me-2"></i>
+
+                    Appearance
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Theme
+
+                    </label>
+
+                    {{ form.theme }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Notifications -->
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-bell me-2"></i>
+
+                    Notifications
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="form-check mb-3">
+
+                    {{ form.email_notifications }}
+
+                    <label class="form-check-label">
+
+                        Email Notifications
+
+                    </label>
+
+                </div>
+
+                <div class="form-check mb-3">
+
+                    {{ form.browser_notifications }}
+
+                    <label class="form-check-label">
+
+                        Browser Notifications
+
+                    </label>
+
+                </div>
+
+                <div class="form-check mb-3">
+
+                    {{ form.assessment_alerts }}
+
+                    <label class="form-check-label">
+
+                        Assessment Alerts
+
+                    </label>
+
+                </div>
+
+                <div class="form-check mb-3">
+
+                    {{ form.customer_alerts }}
+
+                    <label class="form-check-label">
+
+                        Customer Registration Alerts
+
+                    </label>
+
+                </div>
+
+                <div class="form-check">
+
+                    {{ form.weekly_summary }}
+
+                    <label class="form-check-label">
+
+                        Weekly Summary Email
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Dashboard -->
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-speedometer2 me-2"></i>
+
+                    Dashboard
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="form-check mb-3">
+
+                    {{ form.show_dashboard_stats }}
+
+                    <label class="form-check-label">
+
+                        Show Dashboard Statistics
+
+                    </label>
+
+                </div>
+
+                <div class="form-check mb-3">
+
+                    {{ form.show_quick_actions }}
+
+                    <label class="form-check-label">
+
+                        Show Quick Actions
+
+                    </label>
+
+                </div>
+
+                <div class="form-check mb-3">
+
+                    {{ form.show_recent_assessments }}
+
+                    <label class="form-check-label">
+
+                        Show Recent Assessments
+
+                    </label>
+
+                </div>
+
+                <div class="form-check">
+
+                    {{ form.show_recent_customers }}
+
+                    <label class="form-check-label">
+
+                        Show Recent Customers
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Regional -->
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-globe me-2"></i>
+
+                    Regional
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+
+                            Language
+
+                        </label>
+
+                        {{ form.language }}
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+
+                            Time Zone
+
+                        </label>
+
+                        {{ form.timezone }}
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+
+                            Date Format
+
+                        </label>
+
+                        {{ form.date_format }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

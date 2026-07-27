@@ -26,11 +26,20 @@ from django.shortcuts import (
 )
 
 from services.recommendation import RecommendationEngine
-
 from services.bom import BillOfMaterialsService
 
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+)
 
-class AssessmentListView(ListView):
+
+class AssessmentListView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    ListView,
+):
+    permission_required = "audits.view_assessment"
     model = Assessment
     template_name = "audits/assessment_list.html"
     context_object_name = "assessments"
@@ -77,7 +86,12 @@ class AssessmentListView(ListView):
 
 
 
-class AssessmentDetailView(DetailView):
+class AssessmentDetailView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DetailView,
+):
+    permission_required = "audits.view_assessment"
     model = Assessment
     template_name = "audits/assessment_detail.html"
     context_object_name = "assessment"
@@ -131,7 +145,12 @@ class AssessmentDetailView(DetailView):
         return context
 
 
-class AssessmentCreateView(CreateView):
+class AssessmentCreateView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    CreateView,
+):
+    permission_required = "audits.add_assessment"
     model = Assessment
     form_class = AssessmentForm
     template_name = "audits/assessment_form.html"
@@ -155,7 +174,12 @@ class AssessmentCreateView(CreateView):
         )
 
 
-class AssessmentUpdateView(UpdateView):
+class AssessmentUpdateView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    UpdateView,
+):
+    permission_required = "audits.change_assessment"
     model = Assessment
     form_class = AssessmentForm
     template_name = "audits/assessment_form.html"
@@ -179,7 +203,12 @@ class AssessmentUpdateView(UpdateView):
         )
 
 
-class AssessmentDeleteView(DeleteView):
+class AssessmentDeleteView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DeleteView,
+):
+    permission_required = "audits.delete_assessment"
     model = Assessment
     template_name = "audits/assessment_confirm_delete.html"
     success_url = reverse_lazy("audits:list")

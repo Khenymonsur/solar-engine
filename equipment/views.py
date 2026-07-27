@@ -37,17 +37,23 @@ from .models import (
 )
 
 
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+)
 
-class ManufacturerListView(ListView):
 
+class ManufacturerListView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    ListView,
+):
+    permission_required = "equipment.view_manufacturer"
+    raise_exception = True
     model = Manufacturer
-
     template_name = "equipment/manufacturers/manufacturer_list.html"
-
     context_object_name = "manufacturers"
-
     paginate_by = 15
-
     queryset = Manufacturer.objects.order_by("name")
 
     def get_context_data(self, **kwargs):
@@ -84,16 +90,25 @@ class ManufacturerListView(ListView):
 
 
 
-class ManufacturerDetailView(DetailView):
+class ManufacturerDetailView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DetailView
+):
     model = Manufacturer
+    raise_exception = True
+    permission_required = "equipment.view_manufacturer"
     template_name = "equipment/manufacturers/manufacturer_detail.html"
 
 
-class ManufacturerCreateView(CreateView):
+class ManufacturerCreateView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    CreateView):
+    permission_required = "equipment.add_manufacturer"
+    raise_exception = True
     model = Manufacturer
-
     fields = "__all__"
-
     template_name = "equipment/manufacturers/manufacturer_form.html"
 
     def form_valid(self, form):
@@ -109,11 +124,15 @@ class ManufacturerCreateView(CreateView):
         return reverse_lazy("equipment:manufacturers-list")
 
 
-class ManufacturerUpdateView(UpdateView):
+class ManufacturerUpdateView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    UpdateView
+):
+    permission_required = "equipment.change_manufacturer"
+    raise_exception = True
     model = Manufacturer
-
     fields = "__all__"
-
     template_name = "equipment/manufacturers/manufacturer_form.html"
 
     def form_valid(self, form):
@@ -130,26 +149,31 @@ class ManufacturerUpdateView(UpdateView):
 
 
 
-class ManufacturerDeleteView(DeleteView):
+class ManufacturerDeleteView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DeleteView
+):
+    permission_required = "equipment.delete_manufacturer"
+    raise_exception = True
     model = Manufacturer
-
     template_name = "equipment/manufacturers/manufacturer_confirm_delete.html"
-
     success_url = reverse_lazy("equipment:manufacturers-list")
 
 
 
 
-class SolarPanelListView(ListView):
-
+class SolarPanelListView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    ListView
+):
+    permission_required = "equipment.view_solarpanel"
+    raise_exception = True
     model = SolarPanel
-
     template_name = "equipment/solar/panel_list.html"
-
     context_object_name = "panels"
-
     paginate_by = 15
-
     queryset = (
         SolarPanel.objects
         .select_related("manufacturer")
@@ -175,14 +199,16 @@ class SolarPanelListView(ListView):
         return context
 
 
-class SolarPanelCreateView(CreateView):
-
+class SolarPanelCreateView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    CreateView
+):
+    permission_required = "equipment.add_solarpanel"
+    raise_exception = True
     model = SolarPanel
-
     form_class = SolarPanelForm
-
     template_name = "equipment/solar/panel_form.html"
-
     success_url = reverse_lazy("equipment:panel-list")
 
     def form_valid(self, form):
@@ -196,14 +222,16 @@ class SolarPanelCreateView(CreateView):
 
 
 
-class SolarPanelUpdateView(UpdateView):
-
+class SolarPanelUpdateView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    UpdateView
+):
+    permission_required = "equipment.change_solarpanel"
+    raise_exception = True
     model = SolarPanel
-
     form_class = SolarPanelForm
-
     template_name = "equipment/solar/panel_form.html"
-
     success_url = reverse_lazy("equipment:panel-list")
 
     def form_valid(self, form):
@@ -217,27 +245,32 @@ class SolarPanelUpdateView(UpdateView):
 
 
 
-class SolarPanelDeleteView(DeleteView):
-
+class SolarPanelDeleteView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DeleteView
+):
+    permission_required = "equipment.delete_solarpanel"
+    raise_exception = True
     model = SolarPanel
-
     template_name = "equipment/solar/panel_confirm_delete.html"
-
     success_url = reverse_lazy("equipment:panel-list")
 
 
 
 
-class BatteryListView(ListView):
+class BatteryListView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    ListView
+):
 
+    permission_required = "equipment.view_battery"
+    raise_exception = True
     model = Battery
-
     template_name = "equipment/batteries/battery_list.html"
-
     context_object_name = "batteries"
-
     paginate_by = 15
-
     queryset = (
         Battery.objects
         .select_related("manufacturer")
@@ -257,21 +290,28 @@ class BatteryListView(ListView):
         return context
 
 
-class BatteryDetailView(DetailView):
+class BatteryDetailView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DetailView
+):
 
     model = Battery
-
+    permission_required = "equipment.view_battery"
     template_name = "equipment/batteries/battery_detail.html"
+    raise_exception = True
 
 
-class BatteryCreateView(CreateView):
-
+class BatteryCreateView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    CreateView
+):
+    permission_required = "equipment.add_battery"
+    raise_exception = True
     model = Battery
-
     form_class = BatteryForm
-
     template_name = "equipment/batteries/battery_form.html"
-
     success_url = reverse_lazy("equipment:battery-list")
 
     def form_valid(self, form):
@@ -284,14 +324,16 @@ class BatteryCreateView(CreateView):
         return super().form_valid(form)
 
 
-class BatteryUpdateView(UpdateView):
-
+class BatteryUpdateView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    UpdateView
+):
+    permission_required = "equipment.change_battery"
+    raise_exception = True
     model = Battery
-
     form_class = BatteryForm
-
     template_name = "equipment/batteries/battery_form.html"
-
     success_url = reverse_lazy("equipment:battery-list")
 
     def form_valid(self, form):
@@ -304,27 +346,31 @@ class BatteryUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class BatteryDeleteView(DeleteView):
-
+class BatteryDeleteView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DeleteView
+):
+    permission_required = "equipment.delete_battery"
+    raise_exception = True
     model = Battery
-
     template_name = "equipment/batteries/battery_confirm_delete.html"
-
     success_url = reverse_lazy("equipment:battery-list")
 
 
 
 
-class InverterListView(ListView):
-
+class InverterListView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    ListView
+):
+    permission_required = "equipment.view_inverter"
+    raise_exception = True
     model = Inverter
-
     template_name = "equipment/inverters/inverter_list.html"
-
     context_object_name = "inverters"
-
     paginate_by = 15
-
     queryset = (
         Inverter.objects
         .select_related("manufacturer")
@@ -332,21 +378,28 @@ class InverterListView(ListView):
     )
 
 
-class InverterDetailView(DetailView):
+class InverterDetailView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DetailView
+):
 
     model = Inverter
-
+    permission_required = "equipment.view_inverter"
     template_name = "equipment/inverters/inverter_detail.html"
+    raise_exception = True
 
 
-class InverterCreateView(CreateView):
-
+class InverterCreateView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    CreateView
+):
+    permission_required = "equipment.add_inverter"
+    raise_exception = True
     model = Inverter
-
     form_class = InverterForm
-
     template_name = "equipment/inverters/inverter_form.html"
-
     success_url = reverse_lazy("equipment:inverter-list")
 
     def form_valid(self, form):
@@ -359,14 +412,16 @@ class InverterCreateView(CreateView):
         return super().form_valid(form)
 
 
-class InverterUpdateView(UpdateView):
-
+class InverterUpdateView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    UpdateView
+):
+    permission_required = "equipment.change_inverter"
+    raise_exception = True
     model = Inverter
-
     form_class = InverterForm
-
     template_name = "equipment/inverters/inverter_form.html"
-
     success_url = reverse_lazy("equipment:inverter-list")
 
     def form_valid(self, form):
@@ -379,25 +434,30 @@ class InverterUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class InverterDeleteView(DeleteView):
-
+class InverterDeleteView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DeleteView
+):
+    permission_required = "equipment.delete_inverter"
+    raise_exception = True
     model = Inverter
-
     template_name = "equipment/inverters/inverter_confirm_delete.html"
-
     success_url = reverse_lazy("equipment:inverter-list")
 
 
 
 
-class ChargeControllerListView(ListView):
-
+class ChargeControllerListView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    ListView
+):
+    permission_required = "equipment.view_chargecontroller"
+    raise_exception = True
     model = ChargeController
-
     template_name = "equipment/controllers/controller_list.html"
-
     context_object_name = "controllers"
-
     paginate_by = 15
 
     queryset = (
@@ -410,21 +470,28 @@ class ChargeControllerListView(ListView):
     )
 
 
-class ChargeControllerDetailView(DetailView):
+class ChargeControllerDetailView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DetailView
+):
 
     model = ChargeController
-
+    permission_required = "equipment.view_chargecontroller"
     template_name = "equipment/controllers/controller_detail.html"
+    raise_exception = True
 
 
-class ChargeControllerCreateView(CreateView):
-
+class ChargeControllerCreateView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    CreateView
+):
+    permission_required = "equipment.add_chargecontroller"
+    raise_exception = True
     model = ChargeController
-
     form_class = ChargeControllerForm
-
     template_name = "equipment/controllers/controller_form.html"
-
     success_url = reverse_lazy("equipment:controller-list")
 
     def form_valid(self, form):
@@ -437,14 +504,16 @@ class ChargeControllerCreateView(CreateView):
         return super().form_valid(form)
 
 
-class ChargeControllerUpdateView(UpdateView):
-
+class ChargeControllerUpdateView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    UpdateView
+):
+    permission_required = "equipment.change_chargecontroller"
+    raise_exception = True
     model = ChargeController
-
     form_class = ChargeControllerForm
-
     template_name = "equipment/controllers/controller_form.html"
-
     success_url = reverse_lazy("equipment:controller-list")
 
     def form_valid(self, form):
@@ -457,21 +526,30 @@ class ChargeControllerUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class ChargeControllerDeleteView(DeleteView):
-
+class ChargeControllerDeleteView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DeleteView
+):
+    permission_required = "equipment.delete_chargecontroller"
+    raise_exception = True
     model = ChargeController
-
     template_name = (
         "equipment/controllers/controller_confirm_delete.html"
     )
-
     success_url = reverse_lazy("equipment:controller-list")
 
 
 
 
 
-class ApplianceListView(ListView):
+class ApplianceListView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    ListView
+):
+    permission_required = "equipment.view_appliance"
+    raise_exception = True
     model = Appliance
     template_name = "equipment/appliances/appliance_list.html"
     context_object_name = "appliances"
@@ -524,13 +602,26 @@ class ApplianceListView(ListView):
         return context
 
 
-class ApplianceDetailView(DetailView):
+class ApplianceDetailView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DetailView
+):
+
     model = Appliance
+    permission_required = "equipment.view_appliance"
     template_name = "equipment/appliances/appliance_detail.html"
+    raise_exception = True
 
 
 
-class ApplianceCreateView(CreateView):
+class ApplianceCreateView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    CreateView
+):
+    permission_required = "equipment.add_appliance"
+    raise_exception = True
     model = Appliance
     form_class = ApplianceForm
     template_name = "equipment/appliances/appliance_form.html"
@@ -545,7 +636,13 @@ class ApplianceCreateView(CreateView):
 
 
 
-class ApplianceUpdateView(UpdateView):
+class ApplianceUpdateView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    UpdateView
+):
+    permission_required = "equipment.change_appliance"
+    raise_exception = True
     model = Appliance
     form_class = ApplianceForm
     template_name = "equipment/appliances/appliance_form.html"
@@ -560,13 +657,17 @@ class ApplianceUpdateView(UpdateView):
 
 
 
-class ApplianceDeleteView(DeleteView):
+class ApplianceDeleteView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DeleteView
+):
+    permission_required = "equipment.delete_appliance"
+    raise_exception = True
     model = Appliance
-
     template_name = (
         "equipment/appliances/appliance_confirm_delete.html"
     )
-
     success_url = reverse_lazy(
         "equipment:appliance-list"
     )

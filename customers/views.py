@@ -15,6 +15,7 @@ from audits.models import Assessment
 
 
 class CustomerListView(ListView):
+    permission_required = "customers.view_customer"
     model = Customer
     template_name = "customers/customer_list.html"
     context_object_name = "customers"
@@ -53,24 +54,16 @@ class CustomerListView(ListView):
         context.update({
 
             "customer_count": customers.count(),
-
             "assessment_count": Assessment.objects.count(),
-
             "residential_count": customers.filter(
                 building_type=Customer.RESIDENTIAL
             ).count(),
-
             "commercial_count": customers.filter(
                 building_type=Customer.COMMERCIAL
             ).count(),
-
             "industrial_count": customers.filter(
                 building_type=Customer.INDUSTRIAL
             ).count(),
-
-            # "completed_designs": Assessment.objects.filter(
-            #     design_ready=True
-            # ).count(),
 
             "completed_designs": 0,
 
@@ -80,12 +73,14 @@ class CustomerListView(ListView):
 
 
 class CustomerDetailView(DetailView):
+    permission_required = "customers.view_customer"
     model = Customer
     template_name = "customers/customer_detail.html"
     context_object_name = "object"
 
 
 class CustomerCreateView(CreateView):
+    permission_required = "customers.add_customer"
     model = Customer
     form_class = CustomerForm
     template_name = "customers/customer_form.html"
@@ -100,6 +95,7 @@ class CustomerCreateView(CreateView):
 
 
 class CustomerUpdateView(UpdateView):
+    permission_required = "customers.change_customer"
     model = Customer
     form_class = CustomerForm
     template_name = "customers/customer_form.html"
@@ -114,6 +110,7 @@ class CustomerUpdateView(UpdateView):
 
 
 class CustomerDeleteView(DeleteView):
+    permission_required = "customers.delete_customer"
     model = Customer
     template_name = "customers/customer_confirm_delete.html"
     success_url = reverse_lazy("customers:list")
