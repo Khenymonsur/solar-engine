@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from customers.nigeria import STATE_LGAS
 
 
 class CustomerRegistrationForm(forms.Form):
@@ -188,6 +188,30 @@ class AssessmentStepTwoForm(forms.Form):
             }
         ),
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Populate State dropdown
+        self.fields["state"].choices = [
+            ("", "Select State"),
+            *[(state, state) for state in sorted(STATE_LGAS.keys())],
+        ]
+
+        # Determine selected state
+        state = (
+                self.data.get("state")
+                or self.initial.get("state")
+        )
+
+        # Populate LGA dropdown
+        self.fields["lga"].choices = [("", "Select LGA")]
+
+        if state in STATE_LGAS:
+            self.fields["lga"].choices += [
+                (lga, lga)
+                for lga in STATE_LGAS[state]
+            ]
 
 
 

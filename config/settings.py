@@ -203,7 +203,10 @@ LOGIN_URL = "/accounts/login/"
 # -------------------------------------------------
 
 # 2 hours
-SESSION_COOKIE_AGE = 60 * 60 * 2
+# SESSION_COOKIE_AGE = 60 * 60 * 2
+
+# 5 minutes (300 seconds)
+SESSION_COOKIE_AGE = 60 * 5
 
 # Extend session on every request (sliding timeout)
 SESSION_SAVE_EVERY_REQUEST = True

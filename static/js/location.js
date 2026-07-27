@@ -16,6 +16,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (stateSelect && lgaSelect) {
 
+        // Populate State dropdown FIRST
+        if (stateSelect.options.length <= 1) {
+
+            Object.keys(STATE_LGAS)
+                .sort()
+                .forEach(function (state) {
+
+                    const option = document.createElement("option");
+                    option.value = state;
+                    option.textContent = state;
+
+                    stateSelect.appendChild(option);
+
+                });
+
+        }
+
         function populateLGAs(selected = "") {
 
             const state = stateSelect.value;
@@ -34,7 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
             STATE_LGAS[state].forEach(function (lga) {
 
                 const option = document.createElement("option");
-
                 option.value = lga;
                 option.textContent = lga;
 
@@ -48,18 +64,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
 
-        // Preserve selected LGA when editing
         const savedLGA = lgaSelect.dataset.selected || lgaSelect.value;
 
         populateLGAs(savedLGA);
 
         stateSelect.addEventListener("change", function () {
-
             populateLGAs();
-
         });
 
     }
+
 
     // -------------------------------------------------------
     // Google Places Autocomplete
@@ -82,7 +96,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             fields: [
                 "formatted_address",
-                "geometry"
+                "geometry",
+                "address_components"
             ]
 
         });

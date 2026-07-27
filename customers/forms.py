@@ -4,6 +4,7 @@ from .choices import NIGERIAN_STATES
 from .models import Customer
 
 
+
 class CustomerForm(forms.ModelForm):
 
     class Meta:
