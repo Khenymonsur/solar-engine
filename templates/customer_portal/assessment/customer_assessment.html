@@ -143,40 +143,25 @@ My Assessment
 
                 <tbody>
 
-                {% for appliance in assessment.appliance_set.all %}
+                {% for appliance in assessment.appliances.all %}
 
                     <tr>
-
                         <td>{{ appliance.appliance_name }}</td>
-
-                        <td class="text-center">
-                            {{ appliance.quantity }}
-                        </td>
-
-                        <td class="text-end">
-                            {{ appliance.power_rating }}
-                        </td>
-
-                        <td class="text-end">
-                            {{ appliance.hours_per_day }}
-                        </td>
-
+                        <td class="text-center">{{ appliance.quantity }}</td>
+                        <td class="text-end">{{ appliance.power_rating }}</td>
+                        <td class="text-end">{{ appliance.hours_per_day }}</td>
                     </tr>
 
                 {% empty %}
 
                     <tr>
-
                         <td colspan="4" class="text-center py-4">
-
                             No appliances found.
-
                         </td>
-
                     </tr>
 
                 {% endfor %}
-
+                
                 </tbody>
 
             </table>

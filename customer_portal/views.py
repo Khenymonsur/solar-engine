@@ -33,6 +33,8 @@ from audits.models import Assessment
 from django.contrib.auth.mixins import LoginRequiredMixin
 from customers.models import Customer
 
+from customer_portal.forms_auth import CustomerLoginForm
+
 
 
 # ----------------------------------------------------------
@@ -144,16 +146,46 @@ class CustomerRegisterView(FormView):
 # Login
 # ----------------------------------------------------------
 
+# class CustomerLoginView(LoginView):
+#     template_name = "customer_portal/auth/login.html"
+#     redirect_authenticated_user = True
+#
+#     def get_success_url(self):
+#         return reverse_lazy(
+#             "customer_portal:dashboard"
+#         )
+
+
+from django.contrib.auth.views import LoginView
+from django.contrib.auth import login
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
+
 class CustomerLoginView(LoginView):
-
     template_name = "customer_portal/auth/login.html"
-
     redirect_authenticated_user = True
 
-    def get_success_url(self):
-        return reverse_lazy(
-            "customer_portal:dashboard"
+    def form_valid(self, form):
+        login(self.request, form.get_user())
+
+        print("CUSTOMER LOGIN SUCCESS")
+
+        return HttpResponseRedirect(
+            reverse("customer_portal:dashboard")
         )
+
+
+# class CustomerLoginView(LoginView):
+#
+#     template_name = "customer_portal/auth/login.html"
+#
+#     authentication_form = CustomerLoginForm
+#
+#     redirect_authenticated_user = True
+#
+#     def get_success_url(self):
+#         return reverse_lazy("customer_portal:dashboard")
 
 # ----------------------------------------------------------
 # Logout

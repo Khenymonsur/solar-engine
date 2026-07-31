@@ -2,13 +2,19 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 
+from customers.models import Customer
+
 
 def login_view(request):
     """
-    User Login
+    Staff Login
     """
 
     if request.user.is_authenticated:
+
+        if hasattr(request.user, "customer_profile"):
+            return redirect("customer_portal:dashboard")
+
         return redirect("dashboard:index")
 
     if request.method == "POST":
@@ -28,17 +34,20 @@ def login_view(request):
 
             messages.success(
                 request,
-                f"Welcome back, {user.username}!",
+                f"Welcome back, {user.first_name or user.username}!",
             )
 
+            # Customer account
+            if hasattr(user, "customer_profile"):
+                return redirect("customer_portal:dashboard")
+
+            # Staff account
             return redirect("dashboard:index")
 
         messages.error(
             request,
-            "❌ Invalid username or password.",
+            "Invalid username or password.",
         )
-
-        print("LOGIN ERROR MESSAGE ADDED")
 
     return render(
         request,
@@ -47,9 +56,6 @@ def login_view(request):
 
 
 def logout_view(request):
-    """
-    Logout
-    """
 
     logout(request)
 

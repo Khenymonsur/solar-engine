@@ -37,7 +37,6 @@ from django.contrib.auth.mixins import (
 
 
 
-
 @login_required(login_url="accounts:login")
 def dashboard(request):
 
