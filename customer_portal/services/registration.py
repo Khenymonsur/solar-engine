@@ -1,9 +1,10 @@
 from django.db import transaction
-
 from customers.models import Customer
-from audits.models import Assessment, Appliance
 
 from customer_portal.services import AssessmentSessionService
+from customer_portal.services.submission import (
+    AssessmentSubmissionService,
+)
 
 
 class RegistrationService:
@@ -73,47 +74,9 @@ class RegistrationService:
         # Assessment
         # ----------------------------------------
 
-        assessment = Assessment.objects.create(
-
-            customer=customer,
-
-            project_name="Customer Portal Assessment",
-
-            backup_hours=power_data.get(
-                "backup_hours",
-                8,
-            ),
-
-            notes="Submitted from Customer Portal.",
-
-            status="Completed",
-
+        assessment = AssessmentSubmissionService.submit(
+            request,
+            user,
         )
-
-        # ----------------------------------------
-        # Appliances
-        # ----------------------------------------
-
-        for item in appliances:
-
-            Appliance.objects.create(
-
-                assessment=assessment,
-
-                appliance_name=item["name"],
-
-                quantity=item["quantity"],
-
-                power_rating=item["watts"],
-
-                hours_per_day=item["hours_per_day"],
-
-            )
-
-        # ----------------------------------------
-        # Clear Session
-        # ----------------------------------------
-
-        AssessmentSessionService.clear(request)
 
         return assessment

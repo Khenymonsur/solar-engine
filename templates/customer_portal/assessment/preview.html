@@ -22,6 +22,17 @@ Your Preliminary Solar Assessment
 
         </h1>
 
+        {% if request.user.is_authenticated %}
+
+        <p class="lead text-muted">
+
+            Review your preliminary estimate below and submit your assessment
+            to our engineering team.
+
+        </p>
+
+        {% else %}
+
         <p class="lead text-muted">
 
             Based on the information you provided, we've estimated the ideal
@@ -30,6 +41,8 @@ Your Preliminary Solar Assessment
             Create your free account to unlock the complete engineering report.
 
         </p>
+
+        {% endif %}
 
     </div>
 
@@ -178,41 +191,70 @@ Your Preliminary Solar Assessment
 
             </p>
 
-            <p>
+            {% if request.user.is_authenticated %}
+                <p>
 
-                Create a free account to receive:
+                    Your preliminary assessment is ready.
 
-            </p>
+                    Click below to submit it to our engineering team.
 
-            <ul class="list-unstyled">
+                </p>
 
-                <li>✔ Full Engineering Design</li>
+                <form method="post"
+                      action="{% url 'customer_portal:submit-assessment' %}">
 
-                <li>✔ Bill of Materials</li>
+                    {% csrf_token %}
 
-                <li>✔ Official Quotation</li>
+                    <button type="submit"
+                            class="btn btn-success btn-lg">
 
-                <li>✔ Engineer Consultation</li>
+                        Submit Assessment
 
-                <li>✔ Project Tracking</li>
+                    </button>
 
-            </ul>
+                </form>
 
-            <div class="mt-4">
+            {% else %}
 
-                <a href="{% url 'customer_portal:register' %}"
-                   class="btn btn-success btn-lg">
-                    Create Free Account
-                </a>
+                <p>
 
-                <a href="{% url 'customer_portal:login' %}"
-                   class="btn btn-outline-primary btn-lg">
+                    Create a free account to receive:
 
-                    Login
+                </p>
 
-                </a>
+                <ul class="list-unstyled">
 
-            </div>
+                    <li>✔ Full Engineering Design</li>
+
+                    <li>✔ Bill of Materials</li>
+
+                    <li>✔ Official Quotation</li>
+
+                    <li>✔ Engineer Consultation</li>
+
+                    <li>✔ Project Tracking</li>
+
+                </ul>
+
+                <div class="mt-4">
+
+                    <a href="{% url 'customer_portal:register' %}"
+                       class="btn btn-success btn-lg">
+
+                        Create Free Account
+
+                    </a>
+
+                    <a href="{% url 'customer_portal:login' %}"
+                       class="btn btn-outline-primary btn-lg">
+
+                        Login
+
+                    </a>
+
+                </div>
+
+            {% endif %}
 
         </div>
 

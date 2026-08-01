@@ -18,23 +18,28 @@ from customer_portal.services.session import (
     AssessmentSessionService,
 )
 from customer_portal.services.estimation import CustomerEstimationService
-
 from django.shortcuts import redirect
-
 from django.contrib.auth import login, logout
 from django.contrib import messages
-
-from django.contrib.auth.views import LoginView
 from customer_portal.services.registration import RegistrationService
 
 
 from django.views.generic import DetailView
-from audits.models import Assessment
-from django.contrib.auth.mixins import LoginRequiredMixin
 from customers.models import Customer
 
 from customer_portal.forms_auth import CustomerLoginForm
+from audits.models import Assessment
 
+from django.contrib.auth.views import LoginView
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
+
+from customer_portal.services.submission import (
+    AssessmentSubmissionService,
+)
 
 
 # ----------------------------------------------------------
@@ -146,22 +151,6 @@ class CustomerRegisterView(FormView):
 # Login
 # ----------------------------------------------------------
 
-# class CustomerLoginView(LoginView):
-#     template_name = "customer_portal/auth/login.html"
-#     redirect_authenticated_user = True
-#
-#     def get_success_url(self):
-#         return reverse_lazy(
-#             "customer_portal:dashboard"
-#         )
-
-
-from django.contrib.auth.views import LoginView
-from django.contrib.auth import login
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-
-
 class CustomerLoginView(LoginView):
     template_name = "customer_portal/auth/login.html"
     redirect_authenticated_user = True
@@ -175,17 +164,6 @@ class CustomerLoginView(LoginView):
             reverse("customer_portal:dashboard")
         )
 
-
-# class CustomerLoginView(LoginView):
-#
-#     template_name = "customer_portal/auth/login.html"
-#
-#     authentication_form = CustomerLoginForm
-#
-#     redirect_authenticated_user = True
-#
-#     def get_success_url(self):
-#         return reverse_lazy("customer_portal:dashboard")
 
 # ----------------------------------------------------------
 # Logout
@@ -213,42 +191,94 @@ class ForgotPasswordView(TemplateView):
     )
 
 
-
-
-
 # ----------------------------------------------------------
 # Dashboard
 # ----------------------------------------------------------
 
 class CustomerDashboardView(LoginRequiredMixin, TemplateView):
-
     template_name = "customer_portal/dashboard.html"
 
-    login_url = "customer_portal:login"
-
     def get_context_data(self, **kwargs):
-
         context = super().get_context_data(**kwargs)
 
-        customer = Customer.objects.filter(
-            user=self.request.user
-        ).first()
+        customer = self.request.user.customer_profile
 
-        assessment = None
-
-        if customer:
-
-            assessment = (
-                Assessment.objects
-                .filter(customer=customer)
-                .order_by("-created_at")
-                .first()
-            )
+        assessments = (
+            Assessment.objects.filter(customer=customer)
+            .order_by("-created_at")
+        )
 
         context["customer"] = customer
-        context["assessment"] = assessment
+        context["assessments"] = assessments
+
+        context["assessment_count"] = assessments.count()
+
+        context["pending_count"] = assessments.filter(
+            status__in=[
+                "Draft",
+                "In Progress",
+                "Completed",
+            ]
+        ).count()
+
+        context["quotation_count"] = assessments.filter(
+            status="Quoted"
+        ).count()
 
         return context
+
+
+
+#---------------------------------------------------------------
+# New Assessment
+#---------------------------------------------------------------
+
+class NewAssessmentView(LoginRequiredMixin, View):
+    """
+    Starts a brand-new assessment for an existing customer.
+    Clears any previous assessment session.
+    Preloads customer information into the session.
+    """
+
+    def get(self, request):
+
+        # Clear any unfinished assessment
+        AssessmentSessionService.clear(request)
+
+        customer = request.user.customer_profile
+
+        # ----------------------------------
+        # Customer Information
+        # ----------------------------------
+
+        AssessmentSessionService.save_customer(
+            request,
+            {
+                "full_name": customer.full_name,
+                "email": request.user.email,
+                "phone": customer.phone,
+                "whatsapp": customer.whatsapp,
+            },
+        )
+
+        # ----------------------------------
+        # Property Information
+        # ----------------------------------
+
+        AssessmentSessionService.save_property(
+            request,
+            {
+                "address": customer.address,
+                "state": customer.state,
+                "lga": customer.lga,
+                "building_type": customer.building_type,
+            },
+        )
+
+        return redirect(
+            "customer_portal:assessment_step1"
+        )
+
 
 
 # ----------------------------------------------------------
@@ -261,14 +291,25 @@ class AssessmentStepOneView(FormView):
 
     form_class = AssessmentStepOneForm
 
+    def get_initial(self):
+        """
+        Prefill customer information from the assessment session.
+        """
+        initial = super().get_initial()
+
+        session = AssessmentSessionService.get(self.request)
+
+        initial.update(
+            session.get("customer", {})
+        )
+
+        return initial
+
     def form_valid(self, form):
 
         AssessmentSessionService.save_customer(
-
             self.request,
-
             form.cleaned_data,
-
         )
 
         return redirect(
@@ -285,6 +326,20 @@ class AssessmentStepTwoView(FormView):
     template_name = "customer_portal/assessment/step2.html"
 
     form_class = AssessmentStepTwoForm
+
+    def get_initial(self):
+        """
+        Prefill property information from the assessment session.
+        """
+        initial = super().get_initial()
+
+        session = AssessmentSessionService.get(self.request)
+
+        initial.update(
+            session.get("property", {})
+        )
+
+        return initial
 
     def dispatch(self, request, *args, **kwargs):
 
@@ -486,6 +541,9 @@ class RemoveApplianceView(View):
         )
 
 
+# ----------------------------------------------------------
+# Preview Assessment
+# ----------------------------------------------------------
 
 class AssessmentPreviewView(TemplateView):
 
@@ -524,6 +582,10 @@ class AssessmentPreviewView(TemplateView):
 
 
 
+# ----------------------------------------------------------
+# Assessment Detail
+# ----------------------------------------------------------
+
 class CustomerAssessmentDetailView(
     LoginRequiredMixin,
     DetailView,
@@ -549,3 +611,30 @@ from django.http import JsonResponse
 @login_required
 def keep_alive(request):
     return JsonResponse({"status": "ok"})
+
+
+
+# ----------------------------------------------------------
+# Submit Assessment
+# ----------------------------------------------------------
+
+class SubmitAssessmentView(LoginRequiredMixin, View):
+
+    def post(self, request):
+
+        assessment = (
+            AssessmentSubmissionService.submit(
+                request,
+                request.user,
+            )
+        )
+
+        messages.success(
+            request,
+            "Assessment submitted successfully.",
+        )
+
+        return redirect(
+            "customer_portal:assessment-detail",
+            pk=assessment.pk,
+        )

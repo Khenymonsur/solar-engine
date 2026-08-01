@@ -8,30 +8,191 @@ Customer Dashboard
 
 <div class="container py-5">
 
-    <h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-        Customer Dashboard
+        <div>
 
-    </h2>
+            <h2 class="fw-bold">
 
-    <p>
+                Welcome back,
+                {{ customer.full_name }}
 
-        Welcome,
+            </h2>
 
-        {{ customer.full_name }}
+            <p class="text-muted">
 
-    </p>
+                Manage your solar assessments.
 
-    {% if assessment %}
+            </p>
 
-    <a href="{% url 'customer_portal:assessment-detail' assessment.pk %}"
-       class="btn btn-success">
+        </div>
 
-        View My Assessment
+        <a href="{% url 'customer_portal:new-assessment' %}"
+           class="btn btn-success">
 
-    </a>
+            <i class="bi bi-plus-circle me-2"></i>
 
-{% endif %}
+            New Assessment
+
+        </a>
+
+    </div>
+
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body text-center">
+
+                    <h2>{{ assessment_count }}</h2>
+
+                    <p class="mb-0">
+
+                        Assessments
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body text-center">
+
+                    <h2>{{ pending_count }}</h2>
+
+                    <p class="mb-0">
+
+                        Pending
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body text-center">
+
+                    <h2>{{ quotation_count }}</h2>
+
+                    <p class="mb-0">
+
+                        Quotations
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card shadow-sm">
+
+        <div class="card-header">
+
+            My Assessments
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover mb-0">
+
+                <thead>
+
+                <tr>
+
+                    <th>Project</th>
+
+                    <th>Status</th>
+
+                    <th>Date</th>
+
+                    <th></th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for assessment in assessments %}
+
+                    <tr>
+
+                        <td>
+
+                            {{ assessment.project_name }}
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-success">
+
+                                {{ assessment.status }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            {{ assessment.created_at|date:"d M Y" }}
+
+                        </td>
+
+                        <td class="text-end">
+
+                            <a href="{% url 'customer_portal:assessment-detail' assessment.pk %}"
+                               class="btn btn-sm btn-outline-primary">
+
+                                View
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="4"
+                            class="text-center py-4">
+
+                            No assessments found.
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
 
 </div>
 

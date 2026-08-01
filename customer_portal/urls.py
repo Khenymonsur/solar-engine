@@ -55,6 +55,12 @@ urlpatterns = [
 # Assessment Wizard
 
     path(
+            "assessment/new/",
+            views.NewAssessmentView.as_view(),
+            name="new-assessment",
+        ),
+
+    path(
         "assessment/",
         views.AssessmentStepOneView.as_view(),
         name="assessment_step1",
@@ -103,11 +109,16 @@ urlpatterns = [
     ),
 
     path(
+        "assessment/submit/",
+        views.SubmitAssessmentView.as_view(),
+        name="submit-assessment",
+    ),
+
+    path(
         "keep-alive/",
         views.keep_alive,
         name="keep_alive",
     ),
-
 
 
 ]
