@@ -1,124 +1,114 @@
-// ----------------------------
-// Configuration
-// ----------------------------
+document.addEventListener("DOMContentLoaded", function () {
 
-const SESSION_TIMEOUT = 2 * 60 * 60 * 1000;
-const WARNING_BEFORE = 5 * 60 * 1000;
+    const modalElement = document.getElementById("sessionTimeoutModal");
 
-let warningTimer;
-let logoutTimer;
-let countdownTimer;
+    if (!modalElement) {
+        return;
+    }
 
-// ----------------------------
+    const modal = new bootstrap.Modal(modalElement);
 
-function resetTimers() {
+    const stayButton = document.getElementById("stayLoggedIn");
+    const logoutButton = document.getElementById("logoutNow");
+    const countdown = document.getElementById("countdown");
 
-    clearTimeout(warningTimer);
-    clearTimeout(logoutTimer);
-    clearInterval(countdownTimer);
+    const WARNING_TIME = 1000;   // TESTING
+    const LOGOUT_TIME = 3000;    // TESTING
 
-    warningTimer = setTimeout(
-        showWarning,
-        SESSION_TIMEOUT - WARNING_BEFORE
-    );
+    let warningTimer = null;
+    let logoutTimer = null;
+    let countdownTimer = null;
 
-}
+    let warningVisible = false;
+    let loggingOut = false;
 
-// ----------------------------
+    function logoutUser() {
 
-function showWarning() {
+        if (loggingOut) return;
 
-    const modal = new bootstrap.Modal(
-        document.getElementById("sessionTimeoutModal")
-    );
+        loggingOut = true;
 
-    modal.show();
-
-    let seconds = 300;
-
-    updateCountdown(seconds);
-
-    countdownTimer = setInterval(() => {
-
-        seconds--;
-
-        updateCountdown(seconds);
-
-        if (seconds <= 0) {
-
-            clearInterval(countdownTimer);
-
+        if (window.location.pathname.startsWith("/portal/")) {
+            window.location.href = "/portal/logout/";
+        } else {
+            window.location.href = "/accounts/logout/";
         }
+    }
 
-    }, 1000);
+    function showWarning() {
 
-    logoutTimer = setTimeout(() => {
+        if (warningVisible || loggingOut) return;
 
-        window.location.href = "/portal/logout/";
+        warningVisible = true;
 
-    }, WARNING_BEFORE);
+        modal.show();
 
-}
+        let seconds = 2;
 
-// ----------------------------
+        countdown.textContent = "00:02";
 
-function updateCountdown(seconds) {
+        countdownTimer = setInterval(function () {
 
-    const minutes = Math.floor(seconds / 60);
+            seconds--;
 
-    const secs = seconds % 60;
+            countdown.textContent =
+                "00:" + String(Math.max(seconds, 0)).padStart(2, "0");
 
-    document.getElementById("countdown").innerHTML =
-        `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+        }, 1000);
 
-}
+    }
 
-// ----------------------------
+    function resetTimers() {
 
-function stayLoggedIn() {
+        if (loggingOut) return;
 
-    fetch("/portal/keep-alive/", {
+        clearTimeout(warningTimer);
+        clearTimeout(logoutTimer);
+        clearInterval(countdownTimer);
 
-        credentials: "same-origin"
+        warningVisible = false;
+
+        modal.hide();
+
+        warningTimer = setTimeout(showWarning, WARNING_TIME);
+
+        logoutTimer = setTimeout(logoutUser, LOGOUT_TIME);
+
+    }
+
+    if (stayButton) {
+
+        stayButton.addEventListener("click", function () {
+
+            const keepAliveUrl =
+                window.location.pathname.startsWith("/portal/")
+                    ? "/portal/keep-alive/"
+                    : "/accounts/keep-alive/";
+
+            fetch(keepAliveUrl)
+                .finally(resetTimers);
+
+        });
+
+    }
+
+    if (logoutButton) {
+
+        logoutButton.addEventListener("click", logoutUser);
+
+    }
+
+    [
+        "mousemove",
+        "mousedown",
+        "keydown",
+        "touchstart"
+    ].forEach(event => {
+
+        document.addEventListener(event, resetTimers, true);
 
     });
 
-    clearTimeout(logoutTimer);
-    clearInterval(countdownTimer);
-
-    bootstrap.Modal
-        .getInstance(
-            document.getElementById("sessionTimeoutModal")
-        )
-        .hide();
-
     resetTimers();
 
-}
-
-// ----------------------------
-
-[
-    "click",
-    "mousemove",
-    "keydown",
-    "scroll",
-    "touchstart"
-].forEach(event => {
-
-    document.addEventListener(
-        event,
-        resetTimers,
-        true
-    );
-
 });
-
-document
-    .getElementById("stayLoggedIn")
-    .addEventListener(
-        "click",
-        stayLoggedIn
-    );
-
-resetTimers();

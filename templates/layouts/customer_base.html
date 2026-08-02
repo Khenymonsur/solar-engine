@@ -76,9 +76,13 @@
 {% block extra_js %}
 {% endblock %}
 
-{% include "includes/session_timeout.html" %}
+{% if request.user.is_authenticated %}
 
-<script src="{% static 'js/session_timeout.js' %}"></script>
+    {% include "includes/session_timeout.html" %}
+
+    <script src="{% static 'js/session_timeout.js' %}"></script>
+
+{% endif %}
 
 </body>
 

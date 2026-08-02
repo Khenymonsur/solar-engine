@@ -152,8 +152,6 @@
 
 <script src="{% static 'js/location.js' %}"></script>
 
-<script src="{% static 'js/session_timeout.js' %}"></script>
-
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -170,7 +168,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 {% block extra_js %}
 {% endblock %}
-{% include "includes/session_timeout.html" %}
+
+{% if request.user.is_authenticated %}
+
+    {% include "includes/session_timeout.html" %}
+
+    <script src="{% static 'js/session_timeout.js' %}"></script>
+
+{% endif %}
 
 </body>
 

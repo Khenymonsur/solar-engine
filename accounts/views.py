@@ -2,7 +2,13 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 
-from customers.models import Customer
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+
+
+@login_required
+def keep_alive(request):
+    return JsonResponse({"status": "ok"})
 
 
 def login_view(request):
