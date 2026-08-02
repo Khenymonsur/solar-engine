@@ -205,8 +205,8 @@ LOGIN_URL = "/accounts/login/"
 # -------------------------------------------------
 
 # Development
-SESSION_TIMEOUT = 30 * 60          # 30 minutes
-SESSION_WARNING_TIME = 29 * 60     # Show warning after 29 minutes
+SESSION_TIMEOUT = 60          # 30 minutes
+SESSION_WARNING_TIME = 30     # Show warning after 29 minutes
 
 # Production
 # SESSION_TIMEOUT = 15 * 60

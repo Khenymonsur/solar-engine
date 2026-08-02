@@ -43,9 +43,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         modal.show();
 
-        let seconds = 60;
+        let seconds = 30;
 
-        countdown.textContent = "10:00";
+        countdown.textContent = "00:30";
 
         countdownTimer = setInterval(function () {
 
