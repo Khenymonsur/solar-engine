@@ -98,16 +98,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-    [
-        "mousemove",
-        "mousedown",
+    // Only keyboard activity keeps the session alive
+    document.addEventListener(
         "keydown",
-        "touchstart"
-    ].forEach(event => {
-
-        document.addEventListener(event, resetTimers, true);
-
-    });
+        resetTimers,
+        true
+    );
 
     resetTimers();
 

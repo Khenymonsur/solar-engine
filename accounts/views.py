@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render
 
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-
+from .forms import StaffLoginForm
 
 @login_required
 def keep_alive(request):
@@ -23,10 +23,12 @@ def login_view(request):
 
         return redirect("dashboard:index")
 
+    form = StaffLoginForm(request.POST or None)
+
     if request.method == "POST":
 
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+        username = form.data.get("username")
+        password = form.data.get("password")
 
         user = authenticate(
             request,
@@ -43,22 +45,26 @@ def login_view(request):
                 f"Welcome back, {user.first_name or user.username}!",
             )
 
-            # Customer account
             if hasattr(user, "customer_profile"):
                 return redirect("customer_portal:dashboard")
 
-            # Staff account
             return redirect("dashboard:index")
 
         messages.error(
             request,
-            "Invalid username or password.",
+            "Invalid email address or password.",
         )
 
     return render(
         request,
         "accounts/login.html",
+        {
+            "form": form,
+        },
     )
+
+
+
 
 
 def logout_view(request):

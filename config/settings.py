@@ -200,6 +200,12 @@ LOGOUT_REDIRECT_URL = "/accounts/login/"
 
 LOGIN_URL = "/accounts/login/"
 
+
+AUTHENTICATION_BACKENDS = [
+    "accounts.backends.EmailBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
 # -------------------------------------------------
 # Session Timeout Configuration
 # -------------------------------------------------

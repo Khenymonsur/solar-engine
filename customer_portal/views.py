@@ -155,16 +155,11 @@ class CustomerRegisterView(FormView):
 
 class CustomerLoginView(LoginView):
     template_name = "customer_portal/auth/login.html"
+    authentication_form = CustomerLoginForm
     redirect_authenticated_user = True
 
-    def form_valid(self, form):
-        login(self.request, form.get_user())
-
-        print("CUSTOMER LOGIN SUCCESS")
-
-        return HttpResponseRedirect(
-            reverse("customer_portal:dashboard")
-        )
+    def get_success_url(self):
+        return reverse("customer_portal:dashboard")
 
 
 # ----------------------------------------------------------

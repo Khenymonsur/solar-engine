@@ -31,6 +31,8 @@ Staff Login
                             Solar Engineering Platform
                         </p>
 
+                        <hr class="my-4">
+
                     </div>
 
                     {% if messages %}
@@ -57,13 +59,15 @@ Staff Login
                         <div class="mb-3">
 
                             <label class="form-label">
-                                Username
+                                Email Address
                             </label>
 
                             <input
-                                type="text"
+                                type="email"
                                 name="username"
                                 class="form-control form-control-lg"
+                                placeholder="Enter your email address"
+                                autocomplete="email"
                                 autofocus
                                 required>
 
@@ -82,6 +86,8 @@ Staff Login
                                     id="password"
                                     name="password"
                                     class="form-control form-control-lg"
+                                    placeholder="Enter your password"
+                                    autocomplete="current-password"
                                     required>
 
                                 <button
@@ -123,11 +129,8 @@ Staff Login
                             id="loginButton">
 
                             <span id="buttonText">
-
-                                <i class="bi bi-box-arrow-in-right"></i>
-
+                                <i class="bi bi-box-arrow-in-right me-2"></i>
                                 Sign In
-
                             </span>
 
                             <span
@@ -201,6 +204,10 @@ if (form) {
         document
             .getElementById("loadingSpinner")
             .classList.remove("d-none");
+
+        document
+            .getElementById("loginButton")
+            .disable = true;
 
     });
 
