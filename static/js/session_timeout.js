@@ -29,9 +29,9 @@ document.addEventListener("DOMContentLoaded", function () {
         loggingOut = true;
 
         if (window.location.pathname.startsWith("/portal/")) {
-            window.location.href = "/portal/logout/";
+            window.location.replace("/portal/logout/");
         } else {
-            window.location.href = "/accounts/logout/";
+            window.location.replace("/accounts/logout/");
         }
     }
 
