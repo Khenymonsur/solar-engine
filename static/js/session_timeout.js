@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const logoutButton = document.getElementById("logoutNow");
     const countdown = document.getElementById("countdown");
 
-    const WARNING_TIME = 1000;   // TESTING
-    const LOGOUT_TIME = 3000;    // TESTING
+    const WARNING_TIME = window.sessionTimeout.warning;
+    const LOGOUT_TIME = window.sessionTimeout.logout;
 
     let warningTimer = null;
     let logoutTimer = null;
@@ -43,9 +43,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         modal.show();
 
-        let seconds = 2;
+        let seconds = 60;
 
-        countdown.textContent = "00:02";
+        countdown.textContent = "10:00";
 
         countdownTimer = setInterval(function () {
 

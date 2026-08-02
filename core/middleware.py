@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from django.contrib import messages
+from django.conf import settings
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.utils import timezone
@@ -16,8 +16,9 @@ class SessionTimeoutMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
-        # 2 minutes for testing
-        self.timeout = timedelta(seconds=3)
+        self.timeout = timedelta(
+            seconds=settings.SESSION_TIMEOUT
+        )
 
     def __call__(self, request):
 

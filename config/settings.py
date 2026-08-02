@@ -112,6 +112,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.debug",
                 "core.context_processors.google_maps",
+                "core.context_processors.session_timeout",
             ],
         },
     },
@@ -200,19 +201,19 @@ LOGOUT_REDIRECT_URL = "/accounts/login/"
 LOGIN_URL = "/accounts/login/"
 
 # -------------------------------------------------
-# Session Timeout
+# Session Timeout Configuration
 # -------------------------------------------------
 
-# 2 hours
-# SESSION_COOKIE_AGE = 60 * 60 * 2
+# Development
+SESSION_TIMEOUT = 30 * 60          # 30 minutes
+SESSION_WARNING_TIME = 29 * 60     # Show warning after 29 minutes
 
-# 5 minutes (300 seconds)
-SESSION_COOKIE_AGE = 60 * 1
+# Production
+# SESSION_TIMEOUT = 15 * 60
+# SESSION_WARNING_TIME = 14 * 60 + 30
 
-# Extend session on every request (sliding timeout)
+SESSION_COOKIE_AGE = SESSION_TIMEOUT
 SESSION_SAVE_EVERY_REQUEST = True
-
-# Don't logout when browser closes
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 # -------------------------------------------------

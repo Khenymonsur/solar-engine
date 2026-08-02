@@ -80,6 +80,13 @@
 
     {% include "includes/session_timeout.html" %}
 
+    <script>
+        window.sessionTimeout = {
+            warning: {{ SESSION_WARNING_TIME }} * 1000,
+            logout: {{ SESSION_TIMEOUT }} * 1000
+        };
+    </script>
+
     <script src="{% static 'js/session_timeout.js' %}"></script>
 
 {% endif %}
