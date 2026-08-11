@@ -39,6 +39,23 @@
 
         </li>
 
+        {% if perms.crm.view_salesprofile or perms.audits.view_assessment %}
+
+        <li>
+
+            <a href="{% url 'crm:my-leads' %}"
+               class="{% if request.resolver_match.app_name == 'crm' %}active{% endif %}">
+
+                <i class="bi bi-person-workspace"></i>
+
+                <span>My Leads</span>
+
+            </a>
+
+        </li>
+
+        {% endif %}
+
         {% if perms.customers.view_customer %}
 
         <li>

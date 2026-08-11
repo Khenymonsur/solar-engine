@@ -1,0 +1,185 @@
+{% extends "layouts/dashboard_base.html" %}
+
+{% block title %}
+Sales Dashboard
+{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="mb-4">
+
+    <h2>Sales Dashboard</h2>
+
+    <p class="text-muted">
+        Manage your assigned customer leads.
+    </p>
+
+</div>
+
+<div class="row">
+
+    <div class="row mb-4">
+
+    <div class="col-lg-3">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body text-center">
+
+                <h6 class="text-muted">
+
+                    My Leads
+
+                </h6>
+
+                <h2>
+
+                    {{ total_leads }}
+
+                </h2>
+
+                <small class="text-muted">
+
+                    Assigned Leads
+
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-lg-8">
+
+        <div class="card shadow-sm">
+
+            <div class="card-header">
+
+                Recent Leads
+
+            </div>
+
+            <div class="card-body">
+
+                <table class="table table-hover">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Reference</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for lead in recent_leads %}
+
+                        <tr>
+
+                            <td>
+
+                                {{ lead.reference }}
+
+                            </td>
+
+                            <td>
+
+                                {{ lead.customer.full_name }}
+
+                            </td>
+
+                            <td>
+
+                                {{ lead.created_at|date:"d M Y" }}
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="3">
+
+                                No leads assigned.
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+
+        <div class="card shadow-sm">
+
+            <div class="card-header">
+
+                Quick Actions
+
+            </div>
+
+            <div class="card-body d-grid gap-3">
+
+                <a
+                    href="{% url 'crm:dashboard' %}"
+                    class="btn btn-success">
+
+                    <i class="bi bi-speedometer2"></i>
+
+                    Sales Dashboard
+
+                </a>
+
+                <button
+                    class="btn btn-primary"
+                    disabled>
+
+                    <i class="bi bi-people"></i>
+
+                    My Leads (Coming Soon)
+
+                </button>
+
+                <button
+                    class="btn btn-warning"
+                    disabled>
+
+                    <i class="bi bi-file-earmark-text"></i>
+
+                    Quotations
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

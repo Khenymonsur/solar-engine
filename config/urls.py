@@ -3,6 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+
 urlpatterns = [
 
     # -------------------------
@@ -68,6 +69,20 @@ urlpatterns = [
     path(
         "staff/quotations/",
         include(("quotations.urls", "quotations"), namespace="quotations"),
+    ),
+
+    # -------------------------
+    # CRM
+    # -------------------------
+
+    path(
+        "staff/crm/",
+        include("crm.urls"),
+    ),
+
+    path(
+        "staff/administration/",
+        include("administration.urls"),
     ),
 
 ]

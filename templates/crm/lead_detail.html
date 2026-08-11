@@ -1,10 +1,135 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "layouts/dashboard_base.html" %}
 
-</body>
-</html>
+{% block title %}
+Lead Details
+{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="row">
+
+    <div class="col-lg-8">
+
+        <div class="card shadow-sm">
+
+            <div class="card-header">
+
+                Customer Information
+
+            </div>
+
+            <div class="card-body">
+
+                <h3>
+
+                    {{ lead.customer.full_name }}
+
+                </h3>
+
+                <p>
+
+                    {{ lead.customer.phone }}
+
+                </p>
+
+                <p>
+
+                    {{ lead.customer.email }}
+
+                </p>
+
+                <p>
+
+                    Reference:
+
+                    <strong>
+
+                        {{ lead.reference }}
+
+                    </strong>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+
+        <div class="card shadow-sm">
+
+            <div class="card-header">
+
+                Quick Actions
+
+            </div>
+
+            <div class="list-group list-group-flush">
+
+                <!-- Assessment -->
+
+                <a href="{% url 'audits:detail' lead.pk %}"
+                   class="list-group-item list-group-item-action">
+
+                    <i class="bi bi-clipboard-data me-2"></i>
+
+                    View Assessment
+
+                </a>
+
+                <!-- Recommendation -->
+
+                <a href="#"
+                   class="list-group-item list-group-item-action disabled">
+
+                    <i class="bi bi-cpu me-2"></i>
+
+                    Recommendation Engine
+
+                    <small class="text-muted d-block">
+
+                        Coming Soon
+
+                    </small>
+
+                </a>
+
+                <!-- BOM -->
+
+                <a href="#"
+                   class="list-group-item list-group-item-action disabled">
+
+                    <i class="bi bi-list-check me-2"></i>
+
+                    Bill of Materials
+
+                    <small class="text-muted d-block">
+
+                        Coming Soon
+
+                    </small>
+
+                </a>
+
+                <!-- Quotation -->
+
+                <a href="{% url 'quotations:generate' lead.pk %}"
+                   class="list-group-item list-group-item-action">
+
+                    <i class="bi bi-file-earmark-text me-2"></i>
+
+                    Generate Quotation
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

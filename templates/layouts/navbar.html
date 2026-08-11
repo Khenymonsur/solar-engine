@@ -127,7 +127,7 @@
                     data-bs-toggle="dropdown">
 
                 <img
-                        src="https://ui-avatars.com/api/?name=Cloud+Energy&background=0B8F4D&color=fff"
+                        src="https://ui-avatars.com/api/?name={{ request.user.get_full_name|default:request.user.username|urlencode }}&background=0B8F4D&color=fff"
                         class="rounded-circle me-2"
                         width="40"
                         height="40"
@@ -143,9 +143,9 @@
 
                     <br>
 
-                    <small class="text-muted">
+                    <small class="badge bg-success">
 
-                        Engineer
+                        {{ staff_role|title }}
 
                     </small>
 

@@ -8,11 +8,25 @@ class HomeView(TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
 
+        # ---------------------------------------
+        # Referral Link
+        # ---------------------------------------
+
+        if request.GET.get("ref"):
+
+            # ReferralMiddleware has already validated
+            # and stored the referral in the session.
+            return redirect("customer_portal:assessment_step1")
+
+        # ---------------------------------------
+        # Logged-in users
+        # ---------------------------------------
+
         if request.user.is_authenticated:
 
-            # Staff and superusers
+            # Staff and Superusers
             if request.user.is_staff or request.user.is_superuser:
-                return redirect("dashboard:index")   # Change if your URL name differs
+                return redirect("dashboard:index")
 
             # Customer
             return redirect("customer_portal:dashboard")

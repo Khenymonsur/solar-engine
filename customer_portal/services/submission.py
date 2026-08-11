@@ -2,10 +2,13 @@ from django.db import transaction
 
 from audits.models import Assessment, Appliance
 from customers.models import Customer
+from crm.models import SalesProfile
 
 from customer_portal.services.session import (
     AssessmentSessionService,
 )
+
+from .notifications import AssessmentNotificationService
 
 
 class AssessmentSubmissionService:
@@ -27,6 +30,21 @@ class AssessmentSubmissionService:
         power_data = session.get("power", {})
         appliances = session.get("appliances", [])
 
+
+        # ----------------------------------------
+        # Determine Assigned Sales Consultant
+        # ----------------------------------------
+
+        assigned_sales = None
+
+        sales_profile_id = request.session.get("sales_profile_id")
+
+        if sales_profile_id:
+            assigned_sales = SalesProfile.objects.filter(
+                pk=sales_profile_id,
+                active=True,
+            ).first()
+
         # ----------------------------------------
         # Assessment
         # ----------------------------------------
@@ -34,6 +52,8 @@ class AssessmentSubmissionService:
         assessment = Assessment.objects.create(
 
             customer=customer,
+
+            assigned_sales=assigned_sales,
 
             project_name="Customer Portal Assessment",
 
@@ -67,6 +87,38 @@ class AssessmentSubmissionService:
                 hours_per_day=item["hours_per_day"],
 
             )
+
+
+        import logging
+
+        logger = logging.getLogger(__name__)
+
+        # --------------------------------------------------
+        # Send Notifications
+        # --------------------------------------------------
+
+        try:
+            AssessmentNotificationService.send_sales_notification(
+                request,
+                assessment,
+            )
+        except Exception:
+            logger.exception("Failed to send sales notification.")
+
+        try:
+            AssessmentNotificationService.send_customer_confirmation(
+                request,
+                assessment,
+            )
+        except Exception:
+            logger.exception("Failed to send customer confirmation.")
+
+        # --------------------------------------------------
+        # Clear Referral Session
+        # --------------------------------------------------
+
+        request.session.pop("sales_ref", None)
+        request.session.pop("sales_profile_id", None)
 
         # ----------------------------------------
         # Clear Session

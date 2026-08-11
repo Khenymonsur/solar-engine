@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "core",
     "crm",
     "quotations",
+    "administration",
 
 ]
 
@@ -79,6 +80,7 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
 
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "crm.middleware.ReferralMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -113,6 +115,8 @@ TEMPLATES = [
                 "django.template.context_processors.debug",
                 "core.context_processors.google_maps",
                 "core.context_processors.session_timeout",
+                "customer_portal.context_processors.customer_project",
+                "core.context_processors.staff_context",
             ],
         },
     },
@@ -211,8 +215,8 @@ AUTHENTICATION_BACKENDS = [
 # -------------------------------------------------
 
 # Development
-SESSION_TIMEOUT = 60          # 30 minutes
-SESSION_WARNING_TIME = 30     # Show warning after 29 minutes
+SESSION_TIMEOUT = 60 * 60          # one hour
+SESSION_WARNING_TIME = 59 * 60 + 30     # Show warning after 59 minutes
 
 # Production
 # SESSION_TIMEOUT = 15 * 60

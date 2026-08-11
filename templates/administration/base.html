@@ -1,0 +1,128 @@
+{% extends "layouts/dashboard_base.html" %}
+
+{% block dashboard_content %}
+
+<div class="container-fluid">
+
+    <!-- Breadcrumb -->
+
+    <div class="mb-4">
+
+        <nav aria-label="breadcrumb">
+
+            <ol class="breadcrumb">
+
+                <li class="breadcrumb-item">
+
+                    <a href="{% url 'dashboard:index' %}">
+
+                        Dashboard
+
+                    </a>
+
+                </li>
+
+                <li class="breadcrumb-item active">
+
+                    Administration
+
+                </li>
+
+            </ol>
+
+        </nav>
+
+    </div>
+
+    <div class="row">
+
+        <!-- Sidebar -->
+
+        <div class="col-lg-3">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+
+                    <strong>
+
+                        Administration
+
+                    </strong>
+
+                </div>
+
+                <div class="list-group list-group-flush">
+
+                    <a href="{% url 'administration:dashboard' %}"
+                       class="list-group-item list-group-item-action">
+
+                        <i class="bi bi-speedometer2 me-2"></i>
+
+                        Dashboard
+
+                    </a>
+
+                    <a href="{% url 'administration:user-list' %}"
+                       class="list-group-item list-group-item-action">
+
+                        <i class="bi bi-people me-2"></i>
+
+                        Staff Users
+
+                    </a>
+
+                    <a href="{% url 'administration:role-list' %}"
+                       class="list-group-item list-group-item-action">
+
+                        <i class="bi bi-shield-lock me-2"></i>
+
+                        Access Roles
+
+                    </a>
+
+                    <a href="#"
+                       class="list-group-item list-group-item-action disabled">
+
+                        <i class="bi bi-building me-2"></i>
+
+                        Departments
+
+                        <span class="badge bg-secondary float-end">
+
+                            Soon
+
+                        </span>
+
+                    </a>
+
+                    <a href="#"
+                       class="list-group-item list-group-item-action disabled">
+
+                        <i class="bi bi-clock-history me-2"></i>
+
+                        Audit Logs
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Main Content -->
+
+        <div class="col-lg-9">
+
+            {% block administration_content %}
+
+            {% endblock %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

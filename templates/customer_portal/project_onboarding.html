@@ -1,0 +1,246 @@
+{% extends "layouts/customer_base.html" %}
+
+{% block title %}
+Welcome to Cloud Energy
+{% endblock %}
+
+{% block customer_content %}
+
+<div class="container py-5">
+
+    <div class="card border-0 shadow-lg">
+
+        <div class="card-body p-5">
+
+            <div class="text-center mb-5">
+
+                <div class="display-1 text-success mb-3">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+
+                <h1 class="fw-bold">
+                    Welcome to Cloud Energy
+                </h1>
+
+                <p class="lead text-muted">
+
+                    Hello <strong>{{ customer.full_name }}</strong>,
+
+                    your account has been created successfully
+                    and your solar assessment has been received.
+
+                </p>
+
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-md-3">
+
+                    <div class="card shadow-sm h-100">
+
+                        <div class="card-body">
+
+                            <small class="text-muted">
+
+                                Reference
+
+                            </small>
+
+                            <h5 class="fw-bold">
+
+                                {{ assessment.reference }}
+
+                            </h5>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <div class="card shadow-sm h-100">
+
+                        <div class="card-body">
+
+                            <small class="text-muted">
+
+                                Status
+
+                            </small>
+
+                            <h5>
+
+                                {{ assessment.status }}
+
+                            </h5>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <div class="card shadow-sm h-100">
+
+                        <div class="card-body">
+
+                            <small class="text-muted">
+
+                                Submitted
+
+                            </small>
+
+                            <h5>
+
+                                {{ assessment.created_at|date:"d M Y" }}
+
+                            </h5>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <div class="card shadow-sm h-100">
+
+                        <div class="card-body">
+
+                            <small class="text-muted">
+
+                                Lead Source
+
+                            </small>
+
+                            <h5>
+
+                                {% if consultant %}
+                                    Sales Referral
+                                {% else %}
+                                    Website
+                                {% endif %}
+
+                            </h5>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <hr class="my-5">
+
+            <h3 class="mb-4">
+
+                Your Energy Consultant
+
+            </h3>
+
+            {% if consultant %}
+
+                <div class="card bg-light border-success">
+
+                    <div class="card-body">
+
+                        <h5>
+
+                            {{ consultant.user.get_full_name|default:consultant.user.username }}
+
+                        </h5>
+
+                        <p class="mb-1">
+
+                            {{ consultant.user.email }}
+
+                        </p>
+
+                        <p class="mb-0">
+
+                            {{ consultant.phone }}
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            {% else %}
+
+                <div class="alert alert-info">
+
+                    A consultant will be assigned shortly.
+
+                </div>
+
+            {% endif %}
+
+            <hr class="my-5">
+
+            <h3>
+
+                What Happens Next?
+
+            </h3>
+
+            <div class="list-group mt-3">
+
+                <div class="list-group-item">
+                    ✅ Assessment Submitted
+                </div>
+
+                <div class="list-group-item">
+                    🟡 Engineering Review
+                </div>
+
+                <div class="list-group-item">
+                    ⚪ System Design
+                </div>
+
+                <div class="list-group-item">
+                    ⚪ Bill of Materials
+                </div>
+
+                <div class="list-group-item">
+                    ⚪ Quotation
+                </div>
+
+                <div class="list-group-item">
+                    ⚪ Installation
+                </div>
+
+            </div>
+
+            <div class="text-center mt-5">
+
+                <a href="{% url 'customer_portal:assessment-detail' assessment.pk %}"
+                   class="btn btn-outline-primary btn-lg">
+
+                    View Assessment
+
+                </a>
+
+                <a href="{% url 'customer_portal:dashboard' %}"
+                   class="btn btn-success btn-lg">
+
+                    Dashboard
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

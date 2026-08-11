@@ -3,7 +3,12 @@ from decimal import Decimal
 from django.db import models
 
 from customers.models import Customer
+from crm.models import SalesProfile
 from equipment.models import Appliance as LibraryAppliance
+
+from django.utils import timezone
+
+
 
 class Assessment(models.Model):
     """
@@ -20,6 +25,15 @@ class Assessment(models.Model):
         Customer,
         on_delete=models.CASCADE,
         related_name="assessments",
+    )
+
+    assigned_sales = models.ForeignKey(
+        SalesProfile,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="assessments",
+        help_text="Sales consultant responsible for this assessment.",
     )
 
     project_name = models.CharField(
@@ -80,6 +94,13 @@ class Assessment(models.Model):
         default=0,
     )
 
+    reference = models.CharField(
+        max_length=25,
+        unique=True,
+        blank=True,
+        editable=False,
+    )
+
     class Meta:
         ordering = ["-created_at"]
         verbose_name = "Assessment"
@@ -87,6 +108,26 @@ class Assessment(models.Model):
 
     def __str__(self):
         return f"{self.customer.full_name} | {self.project_name}"
+
+
+
+    def save(self, *args, **kwargs):
+        """
+        Save the assessment and generate a permanent
+        reference number after the first save.
+        """
+
+        creating = self.pk is None
+
+        super().save(*args, **kwargs)
+
+        if creating and not self.reference:
+            self.reference = (
+                f"CE-{timezone.now():%Y%m%d}-{self.pk:06d}"
+            )
+
+            super().save(update_fields=["reference"])
+
 
     # --------------------------------------------------
     # Engineering Properties
@@ -161,6 +202,10 @@ class Assessment(models.Model):
         Maximum instantaneous load.
         """
         return self.running_load
+
+
+
+
 
 
 

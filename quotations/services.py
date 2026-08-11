@@ -51,6 +51,9 @@ class QuotationService:
                 description=item["description"],
                 quantity=item["quantity"],
                 unit_price=item["unit_price"],
-                total=item["total"],
+                total=(
+                    item["quantity"] *
+                    item["unit_price"],
+                )
             )
         return quotation

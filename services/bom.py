@@ -40,7 +40,7 @@ class BillOfMaterialsService:
             "quantity": quantity,
             "unit": "pcs",
             "unit_price": unit_price,
-            "line_total": line_total,
+            "total": line_total,
             "currency": "NGN",
             "warranty": getattr(product, "warranty", None),
         }
@@ -109,7 +109,7 @@ class BillOfMaterialsService:
                 items.append(item)
 
         subtotal = sum(
-            (item["line_total"] for item in items),
+            (item["total"] for item in items),
             Decimal("0"),
         )
 

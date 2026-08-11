@@ -1,0 +1,117 @@
+{% extends "administration/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+{{ page_title }}
+{% endblock %}
+
+{% block administration_content %}
+
+<div class="container-fluid">
+
+    <div class="card shadow-sm">
+
+        <div class="card-header">
+
+            <h4>
+
+                {{ page_title }}
+
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <form method="post">
+
+                {% csrf_token %}
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        {{ form.first_name|as_crispy_field }}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        {{ form.last_name|as_crispy_field }}
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        {{ form.username|as_crispy_field }}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        {{ form.email|as_crispy_field }}
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <h5>
+
+                    Access Roles
+
+                </h5>
+
+                {{ form.groups }}
+
+                <hr>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        {{ form.is_active|as_crispy_field }}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        {{ form.is_staff|as_crispy_field }}
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <button
+                    class="btn btn-success">
+
+                    <i class="bi bi-check-circle"></i>
+
+                    Save Changes
+
+                </button>
+
+                <a href="{% url 'administration:user-list' %}"
+                   class="btn btn-secondary">
+
+                    Cancel
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

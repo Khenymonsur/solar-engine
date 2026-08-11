@@ -37,13 +37,15 @@ class RegistrationService:
         # Customer
         # ----------------------------------------
 
+
         customer, created = Customer.objects.update_or_create(
 
             user=user,
-
             defaults={
 
                 "full_name": customer_data["full_name"],
+
+                "email": customer_data["email"],
 
                 "phone": customer_data["phone"],
 

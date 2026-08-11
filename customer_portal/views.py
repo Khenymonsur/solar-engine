@@ -129,6 +129,7 @@ class CustomerRegisterView(FormView):
         login(
             self.request,
             user,
+            backend="accounts.backends.EmailBackend",
         )
 
         assessment = RegistrationService.complete_registration(
@@ -137,15 +138,17 @@ class CustomerRegisterView(FormView):
         )
 
         messages.success(
-
             self.request,
-
-            "Welcome to Cloud Energy!",
-
+            (
+                "🎉 Registration successful! "
+                "Welcome to Cloud Energy Customer Portal. "
+                "Your assessment has been submitted successfully "
+                "and assigned to one of our energy consultants."
+            ),
         )
 
         return redirect(
-            "customer_portal:assessment-detail",
+            "customer_portal:project-onboarding",
             pk=assessment.pk,
         )
 
@@ -632,6 +635,59 @@ class SubmitAssessmentView(LoginRequiredMixin, View):
         )
 
         return redirect(
-            "customer_portal:assessment-detail",
+            "customer_portal:assessment-success",
             pk=assessment.pk,
         )
+
+
+# ----------------------------------------------------------
+# Assessment Success
+# ---------------------------------------------------------
+
+class AssessmentSuccessView(LoginRequiredMixin, DetailView):
+    """
+    Display a success page after an assessment
+    has been submitted successfully.
+    """
+
+    model = Assessment
+
+    template_name = "customer_portal/success.html"
+
+    context_object_name = "assessment"
+
+    def get_queryset(self):
+        return Assessment.objects.filter(
+            customer__user=self.request.user
+        )
+
+
+
+#-----------------------------------------------------------------
+# Project Onboarding Welcome new customer
+#-----------------------------------------------------------------
+
+class ProjectOnboardingView(LoginRequiredMixin, DetailView):
+    """
+    Welcome page displayed immediately after
+    registration and assessment submission.
+    """
+
+    model = Assessment
+    template_name = "customer_portal/project_onboarding.html"
+    context_object_name = "assessment"
+
+    def get_queryset(self):
+        return Assessment.objects.filter(
+            customer__user=self.request.user
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        assessment = self.object
+
+        context["consultant"] = assessment.assigned_sales
+        context["customer"] = assessment.customer
+
+        return context

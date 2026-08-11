@@ -120,5 +120,16 @@ urlpatterns = [
         name="keep_alive",
     ),
 
+    path(
+        "assessment/<int:pk>/success/",
+        views.AssessmentSuccessView.as_view(),
+        name="assessment-success",
+    ),
+
+    path(
+        "assessment/<int:pk>/welcome/",
+        views.ProjectOnboardingView.as_view(),
+        name="project-onboarding",
+    ),
 
 ]
