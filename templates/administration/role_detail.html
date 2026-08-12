@@ -1,0 +1,152 @@
+{% extends "administration/base.html" %}
+
+{% block title %}
+{{ role.name }}
+{% endblock %}
+
+{% block administration_content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2>{{ role.name }}</h2>
+
+        <p class="text-muted">
+
+            Access Role Details
+
+        </p>
+
+    </div>
+
+</div>
+
+<div class="row">
+
+    <!-- Users -->
+
+    <div class="col-lg-4">
+
+        <div class="card shadow-sm">
+
+            <div class="card-header">
+
+                Staff Members
+
+            </div>
+
+            <div class="list-group list-group-flush">
+
+                {% for user in users %}
+
+                    <div class="list-group-item">
+
+                        <strong>
+
+                            {{ user.get_full_name|default:user.username }}
+
+                        </strong>
+
+                        <br>
+
+                        <small class="text-muted">
+
+                            {{ user.email }}
+
+                        </small>
+
+                    </div>
+
+                {% empty %}
+
+                    <div class="list-group-item text-muted">
+
+                        No staff assigned.
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Permissions -->
+
+    <div class="col-lg-8">
+
+        <div class="card shadow-sm">
+
+            <div class="card-header">
+
+                Permissions
+
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-hover mb-0">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Application</th>
+
+                            <th>Permission</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    {% for permission in permissions %}
+
+                        <tr>
+
+                            <td>
+
+                                {{ permission.content_type.app_label|title }}
+
+                            </td>
+
+                            <td>
+
+                                {{ permission.name }}
+
+                            </td>
+
+                        </tr>
+
+                    {% empty %}
+
+                        <tr>
+
+                            <td colspan="2"
+                                class="text-center text-muted">
+
+                                No permissions assigned.
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

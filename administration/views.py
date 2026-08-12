@@ -1,9 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
-from django.contrib.auth.mixins import (
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
-)
 
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -13,6 +8,7 @@ from django.views.generic import (
     ListView,
     TemplateView,
     UpdateView,
+    DetailView,
 )
 
 from .forms import (
@@ -21,60 +17,53 @@ from .forms import (
 )
 
 from django.db.models import Q
-
 from django.contrib.auth.models import Group, Permission
-from django.views.generic import DetailView
+from django.urls import reverse
+
+from core.mixins import ERPPermissionMixin
+from collections import defaultdict
+
 
 
 User = get_user_model()
 
 
+
 class AdministrationDashboardView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
+    ERPPermissionMixin,
     TemplateView,
 ):
-    """
-    Administration Home
-    """
-
     permission_required = "auth.view_user"
 
     template_name = "administration/dashboard.html"
 
     def get_context_data(self, **kwargs):
-
         context = super().get_context_data(**kwargs)
-        staff = User.objects.filter(is_staff=True)
-        context["total_users"] = staff.count()
-        context["active_users"] = staff.filter(
-            is_active=True
+
+        User = get_user_model()
+
+        context["staff_count"] = User.objects.filter(is_staff=True).count()
+        context["active_staff"] = User.objects.filter(
+            is_staff=True,
+            is_active=True,
         ).count()
-        context["inactive_users"] = staff.filter(
-            is_active=False
+        context["inactive_staff"] = User.objects.filter(
+            is_staff=True,
+            is_active=False,
         ).count()
-        context["recent_users"] = (
-            staff
-            .prefetch_related("groups")
-            .order_by("-date_joined")[:5]
-        )
+        context["role_count"] = Group.objects.count()
 
         return context
 
 
 class UserListView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
+    ERPPermissionMixin,
     ListView,
 ):
     permission_required = "auth.view_user"
-
     model = User
-
     template_name = "administration/user_list.html"
-
     context_object_name = "users"
-
     paginate_by = 20
 
     def get_queryset(self):
@@ -113,12 +102,30 @@ class UserListView(
         return queryset
 
 
-
     def get_context_data(self, **kwargs):
-
         context = super().get_context_data(**kwargs)
 
         context["roles"] = Group.objects.order_by("name")
+
+        context["staff_count"] = User.objects.filter(
+            is_staff=True
+        ).count()
+
+        context["active_staff"] = User.objects.filter(
+            is_staff=True,
+            is_active=True,
+        ).count()
+
+        context["inactive_staff"] = User.objects.filter(
+            is_staff=True,
+            is_active=False,
+        ).count()
+
+        context["role_count"] = Group.objects.count()
+
+        context["user_create_url"] = reverse(
+            "administration:user-create"
+        )
 
         return context
 
@@ -126,9 +133,10 @@ class UserListView(
 
 
 
+
+
 class StaffUserUpdateView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
+    ERPPermissionMixin,
     UpdateView,
 ):
     """
@@ -159,8 +167,7 @@ class StaffUserUpdateView(
 
 
 class StaffUserCreateView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
+    ERPPermissionMixin,
     CreateView,
 ):
     permission_required = "auth.add_user"
@@ -189,8 +196,7 @@ class StaffUserCreateView(
 
 
 class RoleListView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
+    ERPPermissionMixin,
     ListView,
 ):
     """
@@ -217,10 +223,12 @@ class RoleListView(
 
 
 class RoleDetailView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
+    ERPPermissionMixin,
     DetailView,
 ):
+    """
+    Display an Access Role.
+    """
 
     permission_required = "auth.view_group"
 
@@ -231,34 +239,49 @@ class RoleDetailView(
     context_object_name = "role"
 
     def get_context_data(self, **kwargs):
-
         context = super().get_context_data(**kwargs)
 
-        context["permissions"] = (
+        grouped_permissions = defaultdict(list)
+
+        permissions = (
             self.object.permissions
             .select_related("content_type")
             .order_by(
                 "content_type__app_label",
-                "name",
+                "codename",
             )
         )
+
+        for permission in permissions:
+            app_name = permission.content_type.app_label.replace("_", " ").title()
+
+            grouped_permissions[app_name].append(permission)
+
+        context["grouped_permissions"] = grouped_permissions
+
+        context["permission_count"] = permissions.count()
+
+        context["module_count"] = len(grouped_permissions)
 
         context["users"] = (
             self.object.user_set
             .filter(is_staff=True)
+            .prefetch_related("groups")
             .order_by(
                 "first_name",
                 "last_name",
             )
         )
 
+        context["user_count"] = context["users"].count()
+
         return context
 
 
 
+
 class RoleCreateView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
+    ERPPermissionMixin,
     TemplateView,
 ):
 
@@ -269,8 +292,7 @@ class RoleCreateView(
 
 
 class RoleUpdateView(
-    LoginRequiredMixin,
-    PermissionRequiredMixin,
+    ERPPermissionMixin,
     TemplateView,
 ):
 
