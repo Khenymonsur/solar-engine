@@ -280,6 +280,57 @@ class RoleDetailView(
 
 
 
+
+class StaffProfileView(
+    ERPPermissionMixin,
+    DetailView,
+):
+    permission_required = "auth.view_user"
+
+    model = User
+
+    template_name = "administration/user_detail.html"
+
+    context_object_name = "staff_user"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        user = self.object
+
+        context["roles"] = user.groups.all()
+
+        context["user_list_url"] = reverse(
+            "administration:user-list"
+        )
+
+        context["user_edit_url"] = reverse(
+            "administration:user-edit",
+            args=[user.pk],
+        )
+
+        context["customer_count"] = (
+            getattr(user, "customer_set", User.objects.none()).count()
+            if hasattr(user, "customer_set")
+            else 0
+        )
+
+        context["assessment_count"] = (
+            getattr(user, "assessment_set", User.objects.none()).count()
+            if hasattr(user, "assessment_set")
+            else 0
+        )
+
+        context["quotation_count"] = (
+            getattr(user, "quotation_set", User.objects.none()).count()
+            if hasattr(user, "quotation_set")
+            else 0
+        )
+
+        return context
+
+
+
 class RoleCreateView(
     ERPPermissionMixin,
     TemplateView,

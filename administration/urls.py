@@ -31,6 +31,12 @@ urlpatterns = [
     ),
 
     path(
+            "users/<int:pk>/",
+            views.StaffProfileView.as_view(),
+            name="user-detail",
+        ),
+
+    path(
         "roles/",
         views.RoleListView.as_view(),
         name="role-list",
@@ -53,6 +59,8 @@ urlpatterns = [
         views.RoleUpdateView.as_view(),
         name="role-edit",
     ),
+
+
 
 
 ]

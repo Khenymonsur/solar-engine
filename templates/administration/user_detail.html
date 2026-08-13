@@ -1,0 +1,224 @@
+{% extends "administration/base.html" %}
+
+{% block title %}
+Staff Profile
+{% endblock %}
+
+{% block administration_content %}
+
+{% include "shared/components/page_header.html" with back_url=user_list_url back_text="Back to Staff Users" title=staff_user.get_full_name|default:staff_user.username subtitle="Employee Profile" primary_button_url=user_edit_url primary_button_text="Edit" primary_button_icon="bi bi-pencil-square" %}
+
+<div class="row">
+
+    <!-- Left Column -->
+
+    <div class="col-lg-4">
+
+        <div class="card shadow-sm mb-4">
+
+            <div class="card-body text-center">
+
+                <div
+                    class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3"
+                    style="width:90px;height:90px;font-size:2rem;">
+
+                    {% if staff_user.first_name or staff_user.last_name %}
+                        {{ staff_user.first_name|first|upper }}
+                        {{ staff_user.last_name|first|upper }}
+                    {% else %}
+                        {{ staff_user.username|slice:":2"|upper }}
+                    {% endif %}
+
+                </div>
+
+                <h4>
+
+                    {{ staff_user.get_full_name|default:staff_user.username }}
+
+                </h4>
+
+                <p class="text-muted">
+
+                    {{ staff_user.email }}
+
+                </p>
+
+                {% if staff_user.is_active %}
+
+                    <span class="badge bg-success">
+
+                        Active
+
+                    </span>
+
+                {% else %}
+
+                    <span class="badge bg-danger">
+
+                        Inactive
+
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <div class="card shadow-sm">
+
+            <div class="card-header">
+
+                <strong>
+
+                    Access Roles
+
+                </strong>
+
+            </div>
+
+            <div class="card-body">
+
+                {% for role in roles %}
+
+                    <span class="badge bg-primary me-1 mb-1">
+
+                        {{ role.name }}
+
+                    </span>
+
+                {% empty %}
+
+                    <span class="text-muted">
+
+                        No Roles Assigned
+
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Right Column -->
+
+    <div class="col-lg-8">
+
+        <div class="row mb-4">
+
+            <div class="col-md-3">
+
+                {% include "shared/components/metric_card.html" with title="Customers" value=customer_count %}
+
+            </div>
+
+            <div class="col-md-3">
+
+                {% include "shared/components/metric_card.html" with title="Assessments" value=assessment_count %}
+
+            </div>
+
+            <div class="col-md-3">
+
+                {% include "shared/components/metric_card.html" with title="Quotations" value=quotation_count %}
+
+            </div>
+
+            <div class="col-md-3">
+
+                {% include "shared/components/metric_card.html" with title="Roles" value=roles.count %}
+
+            </div>
+
+        </div>
+
+        <div class="card shadow-sm">
+
+            <div class="card-header">
+
+                <strong>
+
+                    Overview
+
+                </strong>
+
+            </div>
+
+            <table class="table mb-0">
+
+                <tr>
+
+                    <th width="180">
+
+                        Username
+
+                    </th>
+
+                    <td>
+
+                        {{ staff_user.username }}
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+
+                        Email
+
+                    </th>
+
+                    <td>
+
+                        {{ staff_user.email }}
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+
+                        Last Login
+
+                    </th>
+
+                    <td>
+
+                        {{ staff_user.last_login|default:"Never" }}
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+
+                        Joined
+
+                    </th>
+
+                    <td>
+
+                        {{ staff_user.date_joined }}
+
+                    </td>
+
+                </tr>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

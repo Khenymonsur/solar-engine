@@ -6,7 +6,8 @@ Staff Users
 
 {% block administration_content %}
 
-{% include "shared/components/page_header.html" with title="Staff Users" subtitle="Manage staff accounts and access roles." action_url=user_create_url action_text="Add Staff" action_icon="bi bi-person-plus" show_import=True %}
+{% include "shared/components/page_header.html" with title="Staff Users" subtitle="Manage staff accounts and access roles." primary_button_url=user_create_url primary_button_text="Add Staff" primary_button_icon="bi bi-person-plus" show_import=True %}
+
 
 <form method="get" class="row g-3 mb-4">
 
@@ -225,12 +226,21 @@ Staff Users
 
                         <div class="btn-group">
 
+                            <a href="{% url 'administration:user-detail' user.pk %}"
+                               class="btn btn-outline-primary btn-sm">
+
+                                <i class="bi bi-eye"></i>
+
+                                Profile
+
+                            </a>
+
                             <a href="{% url 'administration:user-edit' user.pk %}"
                                class="btn btn-primary btn-sm">
 
-                                <i class="bi bi-pencil-square me-1"></i>
+                                <i class="bi bi-pencil-square"></i>
 
-                                Manage
+                                Edit
 
                             </a>
 

@@ -1,4 +1,25 @@
-<div class="d-flex justify-content-between align-items-center mb-4">
+{# ========================= #}
+{# ERP Standard Page Header  #}
+{# ========================= #}
+
+{% if back_url %}
+
+<div class="mb-3">
+
+    <a href="{{ back_url }}"
+       class="btn btn-link text-decoration-none ps-0">
+
+        <i class="bi bi-arrow-left"></i>
+
+        {{ back_text|default:"Back" }}
+
+    </a>
+
+</div>
+
+{% endif %}
+
+<div class="d-flex justify-content-between align-items-start mb-4">
 
     <div>
 
@@ -9,31 +30,57 @@
         </h2>
 
         {% if subtitle %}
+
         <p class="text-muted mb-0">
 
             {{ subtitle }}
 
         </p>
+
         {% endif %}
 
     </div>
 
-    {% if action_url %}
+    <div class="d-flex gap-2 flex-wrap">
 
-    <div class="d-flex gap-2">
+        {% if primary_button_url %}
 
-        <a href="{{ action_url }}"
+        <a href="{{ primary_button_url }}"
            class="btn btn-primary">
 
-            <i class="{{ action_icon }} me-1"></i>
+            {% if primary_button_icon %}
 
-            {{ action_text }}
+            <i class="{{ primary_button_icon }} me-1"></i>
+
+            {% endif %}
+
+            {{ primary_button_text }}
 
         </a>
 
+        {% endif %}
+
+        {% if secondary_button_url %}
+
+        <a href="{{ secondary_button_url }}"
+           class="btn btn-outline-secondary">
+
+            {% if secondary_button_icon %}
+
+            <i class="{{ secondary_button_icon }} me-1"></i>
+
+            {% endif %}
+
+            {{ secondary_button_text }}
+
+        </a>
+
+        {% endif %}
+
         {% if show_import %}
 
-        <button class="btn btn-outline-secondary">
+        <button type="button"
+                class="btn btn-outline-secondary">
 
             <i class="bi bi-upload me-1"></i>
 
@@ -43,8 +90,33 @@
 
         {% endif %}
 
+        {% if show_more %}
+
+        <div class="btn-group">
+
+            <button
+                class="btn btn-outline-dark dropdown-toggle"
+                data-bs-toggle="dropdown"
+                type="button">
+
+                More
+
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end">
+
+                {% block page_more_actions %}
+
+                {% endblock %}
+
+            </ul>
+
+        </div>
+
+        {% endif %}
+
     </div>
 
-    {% endif %}
-
 </div>
+
+<hr class="mt-0 mb-4">
