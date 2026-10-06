@@ -117,6 +117,7 @@ TEMPLATES = [
                 "core.context_processors.session_timeout",
                 "customer_portal.context_processors.customer_project",
                 "core.context_processors.staff_context",
+                "core.context_processors.map_settings",
             ],
         },
     },
@@ -297,4 +298,13 @@ SITE_URL = env(
 EMAIL_LOGO_URL = env(
     "EMAIL_LOGO_URL",
     default=f"{SITE_URL}/static/images/Logo.png",
+)
+
+# -----------------------------------------------------
+# Geoapify API KEY
+# -----------------------------------------------------
+
+GEOAPIFY_API_KEY = env(
+    "GEOAPIFY_API_KEY",
+    default="",
 )

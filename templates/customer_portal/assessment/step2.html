@@ -7,29 +7,34 @@ Energy Assessment | Your Property
 
 {% block customer_content %}
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
 <div class="container py-4">
 
     {% include "includes/customer/progress.html" with step=2 total_steps=5 progress=40 %}
 
-    <div class="row g-4">
+    <div class="row g-4 align-items-start">
 
-        <!-- Property Form -->
+    <!-- ================================================= -->
+    <!-- LEFT: PROPERTY FORM -->
+    <!-- ================================================= -->
 
-        <div class="col-lg-8">
+    <div class="col-lg-8">
 
-            <div class="customer-card">
+        <div class="customer-card h-100">
 
-                <div class="card-body p-4">
+            <div class="card-body p-4 p-lg-5">
 
-                    {% include "includes/customer/page_header.html" with title="Tell us about your property" subtitle="Understanding your property helps us estimate the right solar solution." %}
+                {% include "includes/customer/page_header.html" with title="Tell us about your property" subtitle="Understanding your property helps us estimate the right solar solution." %}
 
-                    <form method="post" novalidate>
+                <form method="post" novalidate>
 
-                        {% csrf_token %}
+                    {% csrf_token %}
 
-                    <div class="row">
+                    <div class="row g-3">
 
-                        <div class="col-md-6 mb-3">
+                        <!-- Property Type -->
+                        <div class="col-md-6">
 
                             <label class="form-label fw-semibold">
                                 Property Type
@@ -43,7 +48,9 @@ Energy Assessment | Your Property
 
                         </div>
 
-                        <div class="col-md-6 mb-3">
+
+                        <!-- Building Type -->
+                        <div class="col-md-6">
 
                             <label class="form-label fw-semibold">
                                 Building Type
@@ -57,7 +64,9 @@ Energy Assessment | Your Property
 
                         </div>
 
-                        <div class="col-md-6 mb-3">
+
+                        <!-- State -->
+                        <div class="col-md-6">
 
                             <label class="form-label fw-semibold">
                                 State
@@ -71,7 +80,9 @@ Energy Assessment | Your Property
 
                         </div>
 
-                        <div class="col-md-6 mb-3">
+
+                        <!-- LGA -->
+                        <div class="col-md-6">
 
                             <label class="form-label fw-semibold">
                                 Local Government Area
@@ -85,7 +96,9 @@ Energy Assessment | Your Property
 
                         </div>
 
-                        <div class="col-md-6 mb-3">
+
+                        <!-- City -->
+                        <div class="col-md-6">
 
                             <label class="form-label fw-semibold">
                                 City / Town
@@ -99,53 +112,158 @@ Energy Assessment | Your Property
 
                         </div>
 
-                        <div class="col-12 mb-3">
+
+                        <!-- Address -->
+                        <div class="col-12">
 
                             <label class="form-label fw-semibold">
                                 Property Address
                             </label>
 
-                            {{ form.address }}
+                            <div class="position-relative">
 
-                            {% if form.address.errors %}
-                                <div class="text-danger small mt-1">
-                                    {{ form.address.errors }}
-                                </div>
-                            {% endif %}
+                                {{ form.address }}
 
-                            <small class="text-muted d-block mt-2">
-                                Start typing your address. Google Maps will suggest matching locations.
-                            </small>
-
-
-                            <div class="d-flex justify-content-end mb-3">
-                                <button
-                                    type="button"
-                                    id="current-location-btn"
-                                    class="btn btn-outline-primary">
-
-                                    <i class="bi bi-crosshair"></i>
-                                    Use My Current Location
-                                </button>
-                                <br><br>
+                                <div
+                                    id="address-suggestions"
+                                    class="list-group position-absolute w-100 shadow-sm"
+                                    style="
+                                        z-index: 1050;
+                                        display: none;
+                                        max-height: 260px;
+                                        overflow-y: auto;
+                                    "
+                                ></div>
 
                             </div>
 
-                            <div class="text-danger small">
-                                {{ form.address.errors }}
+                            {% if form.address.errors %}
+
+                                <div class="text-danger small mt-1">
+                                    {{ form.address.errors }}
+                                </div>
+
+                            {% endif %}
+
+                            <small class="text-muted d-block mt-2">
+                                Start typing your address. Matching Nigerian locations will appear below.
+                            </small>
+
+                        </div>
+
+
+                        <!-- Current Location -->
+                        <div class="col-12">
+
+                            <div class="d-flex justify-content-end">
+
+                                <button
+                                    type="button"
+                                    id="current-location-btn"
+                                    class="btn btn-outline-success px-4"
+                                >
+
+                                    <i class="bi bi-crosshair me-2"></i>
+                                    Use My Current Location
+
+                                </button>
+
                             </div>
 
                         </div>
 
+
                         {{ form.latitude }}
                         {{ form.longitude }}
 
-                        <div class="col-12 mb-4">
+
+                        <!-- Map -->
+                        <div
+                            id="map-help"
+                            class="alert alert-light border d-flex align-items-center gap-2 mb-2"
+                            style="display:none;"
+                        >
+                            <i class="bi bi-geo-alt-fill text-success"></i>
+
+                            <small>
+                                Drag the map pin or click anywhere on the map
+                                to adjust the exact property location.
+                            </small>
+                        </div>
+
+                        <div class="col-12">
 
                             <div
                                 id="property-map"
-                                class="border rounded"
-                                style="height:350px; display:none;">
+                                class="property-map border rounded-4 overflow-hidden"
+                                style="height: 320px; display:none;"
+                            ></div>
+
+                        </div>
+
+
+                        <!-- Coordinate panel -->
+                        <div
+                            id="coordinate-panel"
+                            class="col-12"
+                            style="display:none;"
+                        >
+
+                            <div class="coordinate-box">
+
+                                <div class="row align-items-center">
+
+                                    <div class="col-md-4 mb-3 mb-md-0">
+
+                                        <div class="d-flex align-items-center gap-2">
+
+                                            <div class="coordinate-icon">
+                                                <i class="bi bi-geo-alt-fill"></i>
+                                            </div>
+
+                                            <div>
+                                                <small class="text-muted">
+                                                    Property Coordinates
+                                                </small>
+
+                                                <div class="fw-semibold">
+                                                    Location captured
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="col-md-4 text-md-center">
+
+                                        <small class="text-muted">
+                                            Latitude
+                                        </small>
+
+                                        <div
+                                            id="latitude-display"
+                                            class="fw-semibold"
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div class="col-md-4 text-md-center">
+
+                                        <small class="text-muted">
+                                            Longitude
+                                        </small>
+
+                                        <div
+                                            id="longitude-display"
+                                            class="fw-semibold"
+                                        ></div>
+
+                                    </div>
+
+                                </div>
 
                             </div>
 
@@ -153,66 +271,188 @@ Energy Assessment | Your Property
 
                     </div>
 
-                        <div class="border-top pt-4">
 
-                            <small class="text-muted">
+                    <!-- Notice -->
 
-                                📍 This address helps our team prepare a location-specific proposal and installation estimate.
+                    <div class="property-note mt-4">
 
-                            </small>
+                        <i class="bi bi-geo-alt me-2"></i>
 
-                        </div>
+                        This address helps our team prepare a
+                        location-specific proposal and installation estimate.
+
+                    </div>
+
+
+                    <!-- Buttons -->
+
+                    <div class="mt-4">
 
                         {% include "includes/customer/wizard_buttons.html" with back_url="/portal/assessment/" next_text="Continue to Energy Requirements" %}
 
-                    </form>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- RIGHT: PROPERTY INFORMATION -->
+    <!-- ================================================= -->
+
+    <div class="col-lg-4">
+
+        <div class="property-info-card sticky-lg-top">
+
+            <div class="property-info-header">
+
+                <div class="info-icon">
+                    <i class="bi bi-info-lg"></i>
+                </div>
+
+                <h4 class="mb-0">
+                    Property Information
+                </h4>
+
+            </div>
+
+
+            <p class="text-muted mt-3 mb-4">
+
+                Your property details help us determine installation
+                requirements, roof suitability and logistics.
+
+            </p>
+
+
+            <!-- Tip -->
+
+            <div class="property-tip">
+
+                <div class="d-flex gap-3">
+
+                    <div class="tip-icon">
+                        <i class="bi bi-lightbulb"></i>
+                    </div>
+
+                    <div>
+
+                        <strong class="d-block mb-1">
+                            Tip
+                        </strong>
+
+                        <span>
+                            If you're unsure of the exact address,
+                            provide the nearest landmark.
+                        </span>
+
+                    </div>
 
                 </div>
 
             </div>
 
-                    <div id="coordinate-panel"
-                         class="card border-0 shadow-sm mt-3"
-                         style="display:none;">
 
-                        <div class="card-body">
+            <!-- Benefit 1 -->
 
-                            <h6 class="mb-3">
-                                <i class="bi bi-geo-alt-fill text-danger"></i>
-                                Property Coordinates
-                            </h6>
+            <div class="property-benefit">
 
-                            <div class="row text-center">
+                <div class="benefit-icon">
+                    <i class="bi bi-house-check"></i>
+                </div>
 
-                                <div class="col-md-6">
+                <div>
 
-                                    <small class="text-muted">Latitude</small>
+                    <h6>
+                        Installation Assessment
+                    </h6>
 
-                                    <h5 id="latitude-display"></h5>
+                    <p>
+                        Helps us understand roof space,
+                        building structure and technical requirements.
+                    </p>
 
-                                </div>
+                </div>
 
-                                <div class="col-md-6">
+            </div>
 
-                                    <small class="text-muted">Longitude</small>
 
-                                    <h5 id="longitude-display"></h5>
+            <!-- Benefit 2 -->
 
-                                </div>
+            <div class="property-benefit">
 
-                            </div>
+                <div class="benefit-icon">
+                    <i class="bi bi-geo-alt"></i>
+                </div>
 
-                        </div>
+                <div>
 
-                    </div>
+                    <h6>
+                        Accurate Location
+                    </h6>
 
-        </div>
+                    <p>
+                        Allows us to assess the property location
+                        and plan installation logistics.
+                    </p>
 
-        <!-- Help -->
+                </div>
 
-        <div class="col-lg-4">
+            </div>
 
-            {% include "includes/customer/help_card.html" with title="Property Information" body="Your property details help us determine installation requirements, roof suitability and logistics." tip="If you're unsure of the exact address, provide the nearest landmark." %}
+
+            <!-- Benefit 3 -->
+
+            <div class="property-benefit">
+
+                <div class="benefit-icon">
+                    <i class="bi bi-clipboard-check"></i>
+                </div>
+
+                <div>
+
+                    <h6>
+                        Better Recommendations
+                    </h6>
+
+                    <p>
+                        Helps us design the right solar solution
+                        for your specific property type.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Benefit 4 -->
+
+            <div class="property-benefit border-bottom-0 pb-0">
+
+                <div class="benefit-icon">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+
+                <div>
+
+                    <h6>
+                        Faster Processing
+                    </h6>
+
+                    <p>
+                        Complete information helps us prepare
+                        your assessment more efficiently.
+                    </p>
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -221,6 +461,145 @@ Energy Assessment | Your Property
 </div>
 
 
+    <style>
+    .property-info-card {
+        background: #ffffff;
+        border: 1px solid #edf0f2;
+        border-radius: 22px;
+        padding: 28px;
+        box-shadow: 0 12px 35px rgba(16, 24, 40, 0.06);
+        top: 24px;
+    }
+
+    .property-info-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .property-info-header h4 {
+        font-weight: 700;
+        color: #1d2939;
+    }
+
+    .info-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #198754;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .property-tip {
+        background: #eaf7f0;
+        border: 1px solid #b8e3cb;
+        border-radius: 16px;
+        padding: 18px;
+        margin-bottom: 18px;
+        color: #174d36;
+    }
+
+    .tip-icon {
+        font-size: 26px;
+        color: #198754;
+    }
+
+    .property-benefit {
+        display: flex;
+        gap: 16px;
+        padding: 18px 0;
+        border-bottom: 1px solid #eef1f4;
+    }
+
+    .benefit-icon {
+        width: 46px;
+        height: 46px;
+        min-width: 46px;
+        border-radius: 50%;
+        background: #e9f7ef;
+        color: #198754;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 21px;
+    }
+
+    .property-benefit h6 {
+        margin-bottom: 5px;
+        font-weight: 700;
+        color: #1d2939;
+    }
+
+    .property-benefit p {
+        margin: 0;
+        color: #667085;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .property-note {
+        background: #f8faf9;
+        border-radius: 12px;
+        padding: 13px 16px;
+        font-size: 14px;
+        color: #667085;
+    }
+
+    .property-note i {
+        color: #198754;
+    }
+
+    .coordinate-box {
+        background: #f8faf9;
+        border: 1px solid #e5e7eb;
+        border-radius: 15px;
+        padding: 17px 20px;
+    }
+
+    .coordinate-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: #e9f7ef;
+        color: #198754;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 19px;
+    }
+
+    #property-map {
+        box-shadow: 0 4px 15px rgba(16, 24, 40, 0.07);
+    }
+
+    #address-suggestions {
+        border-radius: 0 0 12px 12px;
+    }
+
+    #address-suggestions .list-group-item {
+        padding: 12px 16px;
+        border-left: 0;
+        border-right: 0;
+    }
+
+    #address-suggestions .list-group-item:hover {
+        background: #eaf7f0;
+        color: #146c43;
+    }
+
+    @media (max-width: 991.98px) {
+
+        .property-info-card {
+            margin-top: 8px;
+            position: static !important;
+        }
+
+    }
+</style>
 
 {% endblock customer_content %}
 
@@ -229,7 +608,14 @@ Energy Assessment | Your Property
 
 <script src="{% static 'js/nigeria.js' %}"></script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places"></script>
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+<script>
+    window.GEOAPIFY_API_KEY =
+        "{{ GEOAPIFY_API_KEY|escapejs }}";
+</script>
 
 <script src="{% static 'customer/js/location.js' %}"></script>
 

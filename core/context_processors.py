@@ -71,3 +71,11 @@ def staff_context(request):
         "staff_notifications": staff_notifications,
         "unread_notification_count": unread_notification_count,
     }
+
+
+def map_settings(request):
+
+    return {
+        "GEOAPIFY_API_KEY":
+            settings.GEOAPIFY_API_KEY,
+    }
