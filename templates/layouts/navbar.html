@@ -51,71 +51,219 @@
 
         </li>
 
-        <!-- Notifications -->
+                <!-- Notifications -->
 
-        <li class="nav-item dropdown me-3">
+                <li class="nav-item dropdown me-3">
 
-            <a
-                    class="nav-link position-relative"
-                    href="#"
-                    data-bs-toggle="dropdown">
+                    <a
+                        class="nav-link position-relative"
+                        href="#"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
 
-                <i class="bi bi-bell fs-5"></i>
+                        <i class="bi bi-bell fs-5"></i>
 
-                <span
-                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {% if unread_notification_count > 0 %}
 
-                    3
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                            >
+                                {{ unread_notification_count }}
+                            </span>
 
-                </span>
-
-            </a>
-
-            <ul class="dropdown-menu dropdown-menu-end">
-
-                <li>
-
-                    <h6 class="dropdown-header">
-
-                        Notifications
-
-                    </h6>
-
-                </li>
-
-                <li>
-
-                    <a class="dropdown-item" href="#">
-
-                        New Assessment Created
+                        {% endif %}
 
                     </a>
 
+
+                    <ul
+                        class="dropdown-menu dropdown-menu-end shadow"
+                        style="
+                            width: 380px;
+                            max-height: 480px;
+                            overflow-y: auto;
+                        "
+                    >
+
+                        <!-- Header -->
+
+                        <li class="px-3 py-2 border-bottom">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <strong>
+                                    Notifications
+                                </strong>
+
+                                {% if unread_notification_count > 0 %}
+
+                                    <span class="badge bg-danger">
+
+                                        {{ unread_notification_count }} new
+
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </li>
+
+
+                        <!-- Notification Items -->
+
+                        {% for notification in staff_notifications %}
+
+                            <li>
+
+                                <a
+                                    class="
+                                        dropdown-item
+                                        py-3
+                                        {% if not notification.is_read %}
+                                            bg-light
+                                        {% endif %}
+                                    "
+                                    href="{% url 'core:notification-open' notification.pk %}"
+                                >
+
+                                    <div class="d-flex align-items-start">
+
+                                        <!-- Icon -->
+
+                                        <div class="me-3">
+
+                                            {% if notification.notification_type == "assessment" %}
+
+                                                <i class="bi bi-clipboard-check text-primary fs-4"></i>
+
+                                            {% elif notification.notification_type == "quotation" %}
+
+                                                <i class="bi bi-receipt text-success fs-4"></i>
+
+                                            {% elif notification.notification_type == "report" %}
+
+                                                <i class="bi bi-file-earmark-text text-warning fs-4"></i>
+
+                                            {% else %}
+
+                                                <i class="bi bi-bell text-secondary fs-4"></i>
+
+                                            {% endif %}
+
+                                        </div>
+
+
+                                        <!-- Content -->
+
+                                        <div class="flex-grow-1">
+
+                                            <div class="d-flex justify-content-between align-items-start">
+
+                                                <strong class="small">
+
+                                                    {{ notification.title }}
+
+                                                </strong>
+
+
+                                                {% if not notification.is_read %}
+
+                                                    <span
+                                                        class="rounded-circle bg-primary ms-2 flex-shrink-0"
+                                                        style="
+                                                            width: 8px;
+                                                            height: 8px;
+                                                            margin-top: 4px;
+                                                        "
+                                                    ></span>
+
+                                                {% endif %}
+
+                                            </div>
+
+
+                                            {% if notification.message %}
+
+                                                <div
+                                                    class="small text-muted mt-1"
+                                                    style="
+                                                        white-space: normal;
+                                                        line-height: 1.35;
+                                                    "
+                                                >
+
+                                                    {{ notification.message|truncatechars:90 }}
+
+                                                </div>
+
+                                            {% endif %}
+
+
+                                            <div class="small text-muted mt-1">
+
+                                                {{ notification.created_at|timesince }} ago
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </a>
+
+                            </li>
+
+
+                            {% if not forloop.last %}
+
+                                <li>
+                                    <hr class="dropdown-divider my-0">
+                                </li>
+
+                            {% endif %}
+
+
+                        {% empty %}
+
+                            <li class="px-4 py-4 text-center text-muted">
+
+                                <i class="bi bi-bell-slash fs-3"></i>
+
+                                <div class="mt-2">
+
+                                    No notifications yet
+
+                                </div>
+
+                            </li>
+
+                        {% endfor %}
+
+
+                        <!-- Footer -->
+
+                        <li>
+                            <hr class="dropdown-divider my-0">
+                        </li>
+
+                        <li>
+
+                            <a
+                                class="dropdown-item text-center py-2 fw-semibold"
+                                href="{% url 'core:notifications' %}"
+                            >
+
+                                View All Notifications
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
                 </li>
-
-                <li>
-
-                    <a class="dropdown-item" href="#">
-
-                        Quotation Generated
-
-                    </a>
-
-                </li>
-
-                <li>
-
-                    <a class="dropdown-item" href="#">
-
-                        Report Ready
-
-                    </a>
-
-                </li>
-
-            </ul>
-
-        </li>
 
         <!-- User -->
 

@@ -107,6 +107,17 @@ Energy Assessment | Your Property
 
                             {{ form.address }}
 
+                            {% if form.address.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.address.errors }}
+                                </div>
+                            {% endif %}
+
+                            <small class="text-muted d-block mt-2">
+                                Start typing your address. Google Maps will suggest matching locations.
+                            </small>
+
+
                             <div class="d-flex justify-content-end mb-3">
                                 <button
                                     type="button"
@@ -119,10 +130,6 @@ Energy Assessment | Your Property
                                 <br><br>
 
                             </div>
-
-                            <small class="text-muted">
-                                Start typing your address. Google Maps will suggest matching locations.
-                            </small>
 
                             <div class="text-danger small">
                                 {{ form.address.errors }}
@@ -213,7 +220,10 @@ Energy Assessment | Your Property
 
 </div>
 
+
+
 {% endblock customer_content %}
+
 
 {% block extra_js %}
 
@@ -224,4 +234,3 @@ Energy Assessment | Your Property
 <script src="{% static 'customer/js/location.js' %}"></script>
 
 {% endblock extra_js %}
-

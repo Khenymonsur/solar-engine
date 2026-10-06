@@ -1,0 +1,41 @@
+{% if status == "active" %}
+
+<span class="badge bg-success">
+
+    Active
+
+</span>
+
+{% elif status == "inactive" %}
+
+<span class="badge bg-secondary">
+
+    Inactive
+
+</span>
+
+{% elif status == "draft" %}
+
+<span class="badge bg-warning text-dark">
+
+    Draft
+
+</span>
+
+{% elif status == "completed" %}
+
+<span class="badge bg-primary">
+
+    Completed
+
+</span>
+
+{% else %}
+
+<span class="badge bg-light text-dark">
+
+    {{ status }}
+
+</span>
+
+{% endif %}

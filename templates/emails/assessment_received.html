@@ -1,0 +1,338 @@
+{% extends "emails/base.html" %}
+
+{% block title %}
+Solar Assessment Received
+{% endblock %}
+
+
+{% block content %}
+
+<p
+    style="
+        margin: 0 0 10px;
+        color: #25984A;
+        font-size: 13px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    "
+>
+    Assessment Received
+</p>
+
+
+<h1
+    style="
+        margin: 0 0 20px;
+        color: #101828;
+        font-size: 26px;
+        line-height: 34px;
+    "
+>
+    Thank you, {{ customer_name }}
+</h1>
+
+
+<p
+    style="
+        margin: 0 0 18px;
+        color: #667085;
+        font-size: 15px;
+        line-height: 24px;
+    "
+>
+    Your solar load assessment has been successfully
+    submitted to Cloud Energy Photoelectric Ltd.
+</p>
+
+
+<p
+    style="
+        margin: 0 0 28px;
+        color: #667085;
+        font-size: 15px;
+        line-height: 24px;
+    "
+>
+    Our team will review your power requirements and prepare
+    a suitable solar energy recommendation for your project.
+</p>
+
+
+<!-- Assessment Summary -->
+
+<table
+    role="presentation"
+    width="100%"
+    cellspacing="0"
+    cellpadding="0"
+    border="0"
+    style="
+        width: 100%;
+        margin-bottom: 30px;
+        background-color: #F7F9FA;
+        border: 1px solid #E5E7EB;
+        border-radius: 10px;
+        table-layout: fixed;
+    "
+>
+
+    <tr>
+        <td
+            colspan="2"
+            style="
+                padding: 18px 20px;
+                border-bottom: 1px solid #E5E7EB;
+            "
+        >
+            <strong
+                style="
+                    color: #101828;
+                    font-size: 16px;
+                "
+            >
+                Assessment Summary
+            </strong>
+        </td>
+    </tr>
+
+
+    <tr>
+        <td
+            style="
+                padding: 14px 20px;
+                color: #667085;
+                font-size: 14px;
+                border-bottom: 1px solid #E5E7EB;
+            "
+        >
+            Assessment Reference
+        </td>
+
+        <td
+            align="right"
+            style="
+                padding: 14px 20px;
+                color: #101828;
+                font-size: 14px;
+                font-weight: bold;
+                border-bottom: 1px solid #E5E7EB;
+            "
+        >
+            {{ assessment_reference }}
+        </td>
+    </tr>
+
+
+    <tr>
+        <td
+            style="
+                padding: 14px 20px;
+                color: #667085;
+                font-size: 14px;
+                border-bottom: 1px solid #E5E7EB;
+            "
+        >
+            Assessment Date
+        </td>
+
+        <td
+            align="right"
+            style="
+                padding: 14px 20px;
+                color: #101828;
+                font-size: 14px;
+                border-bottom: 1px solid #E5E7EB;
+            "
+        >
+            {{ assessment_date }}
+        </td>
+    </tr>
+
+
+    <tr>
+        <td
+            style="
+                padding: 14px 20px;
+                color: #667085;
+                font-size: 14px;
+                border-bottom: 1px solid #E5E7EB;
+            "
+        >
+            Connected Load
+        </td>
+
+        <td
+            align="right"
+            style="
+                padding: 14px 20px;
+                color: #101828;
+                font-size: 14px;
+                font-weight: bold;
+                border-bottom: 1px solid #E5E7EB;
+            "
+        >
+            {{ connected_load }}
+        </td>
+    </tr>
+
+
+    <tr>
+        <td
+            style="
+                padding: 14px 20px;
+                color: #667085;
+                font-size: 14px;
+                border-bottom: 1px solid #E5E7EB;
+            "
+        >
+            Status
+        </td>
+
+        <td
+            align="right"
+            style="
+                padding: 14px 20px;
+                color: #25984A;
+                font-size: 14px;
+                font-weight: bold;
+                border-bottom: 1px solid #E5E7EB;
+            "
+        >
+            {{ status }}
+        </td>
+    </tr>
+
+
+    {% if consultant_name %}
+
+    <tr>
+        <td
+            style="
+                padding: 14px 20px;
+                color: #667085;
+                font-size: 14px;
+                border-bottom: 1px solid #E5E7EB;
+            "
+        >
+            Energy Consultant
+        </td>
+
+        <td
+            align="right"
+            style="
+                padding: 14px 20px;
+                color: #101828;
+                font-size: 14px;
+                border-bottom: 1px solid #E5E7EB;
+            "
+        >
+            {{ consultant_name }}
+        </td>
+    </tr>
+
+    {% endif %}
+
+
+    {% if property_address %}
+
+    <tr>
+        <td
+            style="
+                padding: 14px 20px;
+                color: #667085;
+                font-size: 14px;
+            "
+        >
+            Property Address
+        </td>
+
+        <td
+            align="right"
+            style="
+                padding: 14px 20px;
+                color: #101828;
+                font-size: 14px;
+            "
+        >
+            {{ property_address }}
+        </td>
+    </tr>
+
+    {% endif %}
+
+</table>
+
+
+<!-- Button -->
+
+<table
+    role="presentation"
+    cellspacing="0"
+    cellpadding="0"
+    border="0"
+    align="center"
+    style="margin: 0 auto 30px;"
+>
+
+    <tr>
+
+        <td
+            bgcolor="#0098DA"
+            style="
+                border-radius: 8px;
+                text-align: center;
+            "
+        >
+
+            <a
+                href="{{ assessment_url }}"
+                style="
+                    display: inline-block;
+                    padding: 14px 30px;
+                    color: #FFFFFF;
+                    text-decoration: none;
+                    font-size: 15px;
+                    font-weight: bold;
+                "
+            >
+                View Assessment
+            </a>
+
+        </td>
+
+    </tr>
+
+</table>
+
+
+<p
+    style="
+        margin: 0 0 6px;
+        color: #667085;
+        font-size: 13px;
+        line-height: 21px;
+    "
+>
+    If the button above does not work, copy and paste
+    the link below into your browser:
+</p>
+
+
+<p
+    style="
+        margin: 0;
+        font-size: 12px;
+        line-height: 20px;
+        word-break: break-all;
+    "
+>
+    <a
+        href="{{ assessment_url }}"
+        style="color: #0098DA;"
+    >
+        {{ assessment_url }}
+    </a>
+</p>
+
+{% endblock %}

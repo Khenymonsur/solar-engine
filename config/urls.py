@@ -85,6 +85,11 @@ urlpatterns = [
         include("administration.urls"),
     ),
 
+    path(
+        "",
+        include("core.urls"),
+    ),
+
 ]
 
 if settings.DEBUG:

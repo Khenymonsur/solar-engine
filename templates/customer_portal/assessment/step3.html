@@ -80,9 +80,34 @@ Energy Assessment | Energy Requirements
 
                             </div>
 
-                        </div>
+                            <div
+                                id="grid-cost-group"
+                                class="mt-3"
+                                style="display:none;">
 
-                        <!-- Generator -->
+                                <label class="form-label">
+
+                                    Average Monthly Electricity Bill (₦)
+
+                                </label>
+
+                                {{ form.monthly_grid_cost }}
+
+                                <div class="text-danger small">
+
+                                    {{ form.monthly_grid_cost.errors }}
+
+                                </div>
+
+                                <small class="text-muted">
+
+                                    This helps estimate your current electricity costs and potential savings.
+
+                                </small>
+
+                            </div>
+
+                        </div>
 
                         <!-- Generator -->
 
@@ -113,6 +138,285 @@ Energy Assessment | Energy Requirements
                             </div>
 
                         </div>
+
+                    <!-- ========================================================= -->
+                    <!-- Current Energy Setup -->
+                    <!-- ========================================================= -->
+
+                    <div class="card border-0 shadow-sm mb-4">
+
+                        <div class="card-header bg-light">
+
+                            <h5 class="mb-0">
+
+                                <i class="bi bi-lightning-charge-fill text-warning me-2"></i>
+
+                                Current Energy Setup
+
+                            </h5>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <p class="text-muted mb-4">
+
+                                Tell us about your existing power system. This helps our engineers determine
+                                whether your current equipment can be reused, upgraded or integrated into
+                                your new solar solution.
+
+                            </p>
+
+                            <!-- Existing Solar -->
+
+                            <div class="mb-4">
+
+                                <label class="form-label fw-bold">
+
+                                    Do you already have a solar system installed?
+
+                                </label>
+
+                                {{ form.has_existing_solar }}
+
+                                <small class="text-muted d-block mt-1">
+
+                                    Select <strong>Yes</strong> if solar panels are already installed on your property.
+
+                                </small>
+
+                            </div>
+
+                            <!-- Existing Inverter -->
+
+                            <div class="mb-4">
+
+                                <label class="form-label fw-bold">
+
+                                    Do you currently use an inverter?
+
+                                </label>
+
+                                {{ form.has_existing_inverter }}
+
+                                <small class="text-muted d-block mt-1">
+
+                                    We will assess whether it can be reused or upgraded.
+
+                                </small>
+
+                            </div>
+
+                            <!-- Existing Battery -->
+
+                            <div class="mb-4">
+
+                                <label class="form-label fw-bold">
+
+                                    Do you currently use batteries?
+
+                                </label>
+
+                                {{ form.has_existing_battery }}
+
+                                <small class="text-muted d-block mt-1">
+
+                                    Include batteries connected to an inverter or solar system.
+
+                                </small>
+
+                            </div>
+
+                            <hr class="my-4">
+
+                            <h6 class="fw-bold mb-3">
+
+                                Equipment Capacity (if known)
+
+                            </h6>
+
+                            <p class="text-muted small mb-4">
+
+                                If you're unsure of the exact capacities, you may leave these fields blank.
+                                Our engineers will verify them during the site assessment.
+
+                            </p>
+
+                            <div class="row">
+
+                                <!-- Generator -->
+
+                                <div class="col-md-4 mb-3"
+                                     id="generator-capacity-group"
+                                     style="display:none;">
+
+                                    <label class="form-label">
+                                        Generator Capacity (kVA)
+                                    </label>
+
+                                    {{ form.generator_capacity }}
+
+                                    <div class="text-danger small">
+                                        {{ form.generator_capacity.errors }}
+                                    </div>
+
+                                </div>
+
+                                <!-- Inverter -->
+
+                                <div class="col-md-4 mb-3"
+                                     id="inverter-capacity-group"
+                                     style="display:none;">
+
+                                    <label class="form-label">
+
+                                        Existing Inverter Capacity (kVA)
+
+                                    </label>
+
+                                    {{ form.existing_inverter_capacity }}
+
+
+                                    <div class="text-danger small">
+                                        {{ form.existing_inverter_capacity.errors }}
+                                    </div>
+
+                                </div>
+
+                                <!-- Battery -->
+
+                                <div class="col-md-4 mb-3"
+                                     id="battery-capacity-group"
+                                     style="display:none;">
+
+                                    <label class="form-label">
+
+                                        Existing Battery Capacity (kWh)
+
+                                    </label>
+
+                                    {{ form.existing_battery_capacity }}
+
+
+                                    <div class="text-danger small">
+                                        {{ form.existing_battery_capacity.errors }}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ========================================================= -->
+                    <!-- Current Energy Costs -->
+                    <!-- ========================================================= -->
+
+                    <div class="card border-0 shadow-sm mb-4">
+
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">
+                                <i class="bi bi-cash-coin text-success me-2"></i>
+                                Current Energy Costs
+                            </h5>
+                        </div>
+
+                        <div class="card-body">
+
+                            <p class="text-muted mb-4">
+                                These questions help us estimate your current running cost and calculate
+                                potential savings after switching to solar.
+                            </p>
+
+                            <div class="row">
+
+                                <!-- Electricity Bill -->
+
+                                <div class="col-md-6 mb-3"
+                                     id="grid-cost-card"
+                                     style="display:none;">
+
+                                    <label class="form-label">
+                                        Average Monthly Electricity Bill (₦)
+                                    </label>
+
+                                    {{ form.monthly_grid_cost }}
+
+                                    <div class="text-danger small">
+                                        {{ form.monthly_grid_cost.errors }}
+                                    </div>
+
+                                </div>
+
+                                <!-- Fuel -->
+
+                                <div class="col-md-6 mb-3"
+                                     id="generator-fuel-card"
+                                     style="display:none;">
+
+                                    <label class="form-label">
+                                        Average Monthly Fuel / Diesel Cost (₦)
+                                    </label>
+
+                                    {{ form.monthly_fuel_cost }}
+
+                                    <div class="text-danger small">
+                                        {{ form.monthly_fuel_cost.errors }}
+                                    </div>
+
+                                </div>
+
+                                <!-- Maintenance -->
+
+                                <div class="col-md-6 mb-3"
+                                     id="generator-maintenance-card"
+                                     style="display:none;">
+
+                                    <label class="form-label">
+                                        Average Monthly Generator Maintenance (₦)
+                                    </label>
+
+                                    {{ form.monthly_generator_maintenance }}
+
+                                </div>
+
+                                <!-- Hours -->
+
+                                <div class="col-md-6 mb-3"
+                                     id="generator-hours-card"
+                                     style="display:none;">
+
+                                    <label class="form-label">
+                                        Average Generator Usage (Hours per Day)
+                                    </label>
+
+                                    {{ form.daily_generator_hours }}
+
+                                    <div class="text-danger small">
+                                        {{ form.daily_generator_hours.errors }}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="alert alert-info mb-0">
+
+                                <i class="bi bi-info-circle me-2"></i>
+
+                                If you're unsure of the exact figures, provide your best estimate.
+                                Our engineers will verify them during the site visit.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
 
                         <!-- Future Expansion -->
 
@@ -152,6 +456,18 @@ Energy Assessment | Energy Requirements
 
                         </div>
 
+                        {% if form.errors %}
+
+                        <div class="alert alert-danger mt-4">
+
+                            <strong>Form Errors</strong>
+
+                            {{ form.errors }}
+
+                        </div>
+
+                        {% endif %}
+
                         {% include "includes/customer/wizard_buttons.html" with back_url="/portal/assessment/property/" next_text="Continue to Appliance Schedule" %}
 
                     </form>
@@ -173,5 +489,128 @@ Energy Assessment | Energy Requirements
     </div>
 
 </div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    function toggleGroup(radioName, groupIds, requiredIds = []) {
+
+        const radios = document.querySelectorAll(
+            'input[name="' + radioName + '"]'
+        );
+
+        function update() {
+
+            let value = "";
+
+            radios.forEach(function(r){
+
+                if(r.checked){
+
+                    value = r.value;
+
+                }
+
+            });
+
+            groupIds.forEach(function(id){
+
+                const group = document.getElementById(id);
+
+                if(!group) return;
+
+                const input = group.querySelector("input");
+
+                if(value === "yes"){
+
+                    group.style.display = "block";
+
+                }else{
+
+                    group.style.display = "none";
+
+                    if(input){
+
+                        input.required = false;
+
+                        input.value = "";
+
+                    }
+
+                }
+
+            });
+
+            requiredIds.forEach(function(id){
+
+                const group = document.getElementById(id);
+
+                if(!group) return;
+
+                const input = group.querySelector("input");
+
+                if(input){
+
+                    input.required = (value === "yes");
+
+                }
+
+            });
+
+        }
+
+        radios.forEach(function(r){
+
+            r.addEventListener("change", update);
+
+        });
+
+        update();
+
+    }
+
+    // Equipment
+
+    toggleGroup(
+        "generator_available",
+        ["generator-capacity-group"],
+        ["generator-capacity-group"]
+    );
+
+    toggleGroup(
+        "has_existing_inverter",
+        ["inverter-capacity-group"],
+        ["inverter-capacity-group"]
+    );
+
+    toggleGroup(
+        "has_existing_battery",
+        ["battery-capacity-group"],
+        ["battery-capacity-group"]
+    );
+
+    // Energy Costs
+
+    toggleGroup(
+        "grid_available",
+        ["grid-cost-card"],
+        ["grid-cost-card"]
+    );
+
+    toggleGroup(
+        "generator_available",
+        [
+            "generator-fuel-card",
+            "generator-maintenance-card",
+            "generator-hours-card"
+        ],
+        [
+            "generator-fuel-card"
+        ]
+    );
+
+});
+</script>
 
 {% endblock %}

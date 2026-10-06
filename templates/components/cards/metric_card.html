@@ -44,13 +44,25 @@
 
         <div class="card-footer bg-transparent border-0 pt-0">
 
-            <small class="text-primary fw-semibold">
+            {% if url %}
 
-                View Details
+                <a
+                    href="{{ url }}"
+                    class="text-primary fw-semibold text-decoration-none"
+                >
+                    View Details
 
-                <i class="bi bi-arrow-right-short"></i>
+                    <i class="bi bi-arrow-right-short"></i>
+                </a>
 
-            </small>
+            {% else %}
+
+                <span class="text-muted fw-semibold">
+                    View Details
+                    <i class="bi bi-arrow-right-short"></i>
+                </span>
+
+            {% endif %}
 
         </div>
 

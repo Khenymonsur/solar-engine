@@ -5,13 +5,6 @@ from . import views
 
 app_name = "customer_portal"
 
-# urlpatterns = [
-#
-#     path(
-#         "",
-#         views.CustomerDashboardView.as_view(),
-#         name="dashboard",
-#     ),
 
 urlpatterns = [
 
@@ -49,6 +42,24 @@ urlpatterns = [
     path("forgot-password/",
          views.ForgotPasswordView.as_view(),
          name="forgot_password"
+    ),
+
+    path(
+        "password-reset/done/",
+        views.CustomerPasswordResetDoneView.as_view(),
+        name="password_reset_done",
+    ),
+
+    path(
+        "password-reset/confirm/<uidb64>/<token>/",
+        views.CustomerPasswordResetConfirmView.as_view(),
+        name="password_reset_confirm",
+    ),
+
+    path(
+        "password-reset/complete/",
+        views.CustomerPasswordResetCompleteView.as_view(),
+        name="password_reset_complete",
     ),
 
 

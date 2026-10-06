@@ -60,6 +60,18 @@ urlpatterns = [
         name="role-edit",
     ),
 
+    path(
+        "users/<int:pk>/roles/",
+        views.StaffRoleUpdateView.as_view(),
+        name="user-roles",
+    ),
+
+    path(
+        "users/<int:pk>/toggle-status/",
+        views.StaffAccountStatusView.as_view(),
+        name="user-toggle-status",
+    ),
+
 
 
 

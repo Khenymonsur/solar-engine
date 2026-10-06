@@ -27,19 +27,28 @@ from customer_portal.services.registration import RegistrationService
 from django.views.generic import DetailView
 from customers.models import Customer
 
-from customer_portal.forms_auth import CustomerLoginForm
+from customer_portal.forms_auth import (
+    CustomerLoginForm,
+    CustomerPasswordResetForm,
+)
 from audits.models import Assessment
 
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import (
+    LoginView,
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView,
+)
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-
-
 from customer_portal.services.submission import (
     AssessmentSubmissionService,
 )
+
+from django.conf import settings
 
 
 
@@ -182,12 +191,81 @@ def customer_logout(request):
     )
 
 # ----------------------------------------------------------
-# Forget Password
+# Forgot Password
 # ----------------------------------------------------------
-class ForgotPasswordView(TemplateView):
+
+class ForgotPasswordView(PasswordResetView):
 
     template_name = (
         "customer_portal/auth/forgot_password.html"
+    )
+
+    form_class = CustomerPasswordResetForm
+
+    email_template_name = (
+        "customer_portal/auth/password_reset_email.txt"
+    )
+
+    html_email_template_name = (
+        "customer_portal/auth/password_reset_email.html"
+    )
+
+    subject_template_name = (
+        "customer_portal/auth/password_reset_subject.txt"
+    )
+
+    success_url = reverse_lazy(
+        "customer_portal:password_reset_done"
+    )
+
+    from_email = None
+
+    extra_email_context = {
+        "company_name": "Cloud Energy Photoelectric Ltd",
+        "logo_url": settings.EMAIL_LOGO_URL,
+    }
+
+
+# ----------------------------------------------------------
+# Password Reset Email Sent
+# ----------------------------------------------------------
+
+class CustomerPasswordResetDoneView(
+    PasswordResetDoneView
+):
+
+    template_name = (
+        "customer_portal/auth/password_reset_done.html"
+    )
+
+
+# ----------------------------------------------------------
+# Password Reset Confirm
+# ----------------------------------------------------------
+
+class CustomerPasswordResetConfirmView(
+    PasswordResetConfirmView
+):
+
+    template_name = (
+        "customer_portal/auth/password_reset_confirm.html"
+    )
+
+    success_url = reverse_lazy(
+        "customer_portal:password_reset_complete"
+    )
+
+
+# ----------------------------------------------------------
+# Password Reset Complete
+# ----------------------------------------------------------
+
+class CustomerPasswordResetCompleteView(
+    PasswordResetCompleteView
+):
+
+    template_name = (
+        "customer_portal/auth/password_reset_complete.html"
     )
 
 

@@ -24,43 +24,297 @@ Assessment Workspace
 
 <div class="card shadow-sm border-0 mb-4">
 
+    <div class="card-header bg-light">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-info-circle me-2"></i>
+
+            Assessment Summary
+
+        </h5>
+
+    </div>
+
     <div class="card-body">
+
+        <!-- Basic Information -->
 
         <div class="row">
 
-            <div class="col-md-3">
+            <div class="col-md-3 mb-3">
 
-                <h6>Customer</h6>
+                <small class="text-muted">
 
-                <strong>{{ assessment.customer.name }}</strong>
+                    Customer
 
-            </div>
+                </small>
 
-            <div class="col-md-3">
+                <div class="fw-semibold">
 
-                <h6>Location</h6>
+                    {{ assessment.customer.name }}
 
-                {{ assessment.customer.city }}
-
-            </div>
-
-            <div class="col-md-3">
-
-                <h6>Status</h6>
-
-                <span class="badge bg-success">
-
-                    {{ assessment.status }}
-
-                </span>
+                </div>
 
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-3 mb-3">
 
-                <h6>Date</h6>
+                <small class="text-muted">
 
-                {{ assessment.created_at|date:"d M Y" }}
+                    Location
+
+                </small>
+
+                <div class="fw-semibold">
+
+                    {{ assessment.customer.city|default:"Not Provided" }}
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3 mb-3">
+
+                <small class="text-muted">
+
+                    Status
+
+                </small>
+
+                <div>
+
+                    <span class="badge bg-success">
+
+                        {{ assessment.status }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3 mb-3">
+
+                <small class="text-muted">
+
+                    Assessment Date
+
+                </small>
+
+                <div class="fw-semibold">
+
+                    {{ assessment.created_at|date:"d M Y" }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <!-- Current Energy Setup -->
+
+        <h6 class="mb-3">
+
+            <i class="bi bi-lightning-charge-fill text-warning me-2"></i>
+
+            Current Energy Setup
+
+        </h6>
+
+        <div class="row">
+
+            <div class="col-md-3 mb-3">
+
+                <small class="text-muted">
+
+                    Grid Connection
+
+                </small>
+
+                <div>
+
+                    {% if assessment.grid_available %}
+
+                        <span class="badge bg-success">
+
+                            Connected
+
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-secondary">
+
+                            Off Grid
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3 mb-3">
+
+                <small class="text-muted">
+
+                    Generator
+
+                </small>
+
+                <div>
+
+                    {% if assessment.generator_available %}
+
+                        <span class="badge bg-success">
+
+                            Available
+
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-secondary">
+
+                            None
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3 mb-3">
+
+                <small class="text-muted">
+
+                    Generator Capacity
+
+                </small>
+
+                <div class="fw-semibold">
+
+                    {{ assessment.generator_capacity|default:"Not Provided" }}
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3 mb-3">
+
+                <small class="text-muted">
+
+                    Existing Solar
+
+                </small>
+
+                <div>
+
+                    {% if assessment.has_existing_solar %}
+
+                        <span class="badge bg-success">
+
+                            Yes
+
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-secondary">
+
+                            No
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-4 mb-3">
+
+                <small class="text-muted">
+
+                    Existing Inverter
+
+                </small>
+
+                <div>
+
+                    {% if assessment.has_existing_inverter %}
+
+                        Yes
+
+                        {% if assessment.existing_inverter_capacity %}
+
+                            ({{ assessment.existing_inverter_capacity }} kVA)
+
+                        {% endif %}
+
+                    {% else %}
+
+                        No
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4 mb-3">
+
+                <small class="text-muted">
+
+                    Existing Battery
+
+                </small>
+
+                <div>
+
+                    {% if assessment.has_existing_battery %}
+
+                        Yes
+
+                        {% if assessment.existing_battery_capacity %}
+
+                            ({{ assessment.existing_battery_capacity }} kWh)
+
+                        {% endif %}
+
+                    {% else %}
+
+                        No
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4 mb-3">
+
+                <small class="text-muted">
+
+                    Backup Requirement
+
+                </small>
+
+                <div class="fw-semibold">
+
+                    {{ assessment.backup_hours }} Hours
+
+                </div>
 
             </div>
 

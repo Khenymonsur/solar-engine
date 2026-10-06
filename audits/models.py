@@ -19,6 +19,7 @@ class Assessment(models.Model):
         (12, "12 Volts"),
         (24, "24 Volts"),
         (48, "48 Volts"),
+        (96, "96 Volts"),
     )
 
     customer = models.ForeignKey(
@@ -43,6 +44,59 @@ class Assessment(models.Model):
     backup_hours = models.PositiveIntegerField(
         default=8,
         help_text="Desired backup duration in hours.",
+    )
+
+    # --------------------------------------------------
+    # Current Energy Setup
+    # --------------------------------------------------
+
+    grid_available = models.BooleanField(
+        default=True,
+        verbose_name="Connected to Public Grid",
+    )
+
+    generator_available = models.BooleanField(
+        default=False,
+        verbose_name="Generator Available",
+    )
+
+    has_existing_solar = models.BooleanField(
+        default=False,
+        verbose_name="Existing Solar System",
+    )
+
+    has_existing_inverter = models.BooleanField(
+        default=False,
+        verbose_name="Existing Inverter",
+    )
+
+    has_existing_battery = models.BooleanField(
+        default=False,
+        verbose_name="Existing Battery Bank",
+    )
+
+    generator_capacity = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        help_text="Generator capacity in kVA.",
+    )
+
+    existing_inverter_capacity = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        help_text="Existing inverter capacity in kVA.",
+    )
+
+    existing_battery_capacity = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        help_text="Existing battery capacity in kWh.",
     )
 
     peak_sun_hours = models.DecimalField(
@@ -88,6 +142,15 @@ class Assessment(models.Model):
 
     report_generated = models.BooleanField(
         default=False,
+    )
+
+    customer_confirmation_sent = models.BooleanField(
+        default=False,
+    )
+
+    customer_confirmation_sent_at = models.DateTimeField(
+        null=True,
+        blank=True,
     )
 
     completion_percentage = models.PositiveIntegerField(

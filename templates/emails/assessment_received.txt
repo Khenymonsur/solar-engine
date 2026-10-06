@@ -1,0 +1,30 @@
+Hello {{ customer_name }},
+
+Thank you for completing your solar load assessment with Cloud Energy Photoelectric Ltd.
+
+Your assessment has been successfully submitted.
+
+ASSESSMENT SUMMARY
+
+Reference: {{ assessment_reference }}
+Assessment Date: {{ assessment_date }}
+Connected Load: {{ connected_load }}
+Status: {{ status }}
+
+{% if consultant_name %}
+Energy Consultant: {{ consultant_name }}
+{% endif %}
+
+{% if property_address %}
+Property Address: {{ property_address }}
+{% endif %}
+
+View your assessment:
+
+{{ assessment_url }}
+
+Our team will review your power requirements and prepare a suitable solar energy recommendation.
+
+Regards,
+
+Cloud Energy Photoelectric Ltd

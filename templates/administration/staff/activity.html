@@ -1,0 +1,49 @@
+<div class="row">
+
+    <div class="col-md-3 mb-3">
+
+        {% include "shared/components/metric_card.html" with title="Customers" value=customer_count icon="bi bi-people" %}
+
+    </div>
+
+    <div class="col-md-3 mb-3">
+
+        {% include "shared/components/metric_card.html" with title="Assessments" value=assessment_count icon="bi bi-people" %}
+
+    </div>
+
+    <div class="col-md-3 mb-3">
+
+        {% include "shared/components/metric_card.html" with title="Quotations" value=quotation_count icon="bi bi-people" %}
+
+    </div>
+
+    <div class="col-md-3 mb-3">
+
+        {% include "shared/components/metric_card.html" with title="Roles" value=role_count icon="bi bi-people" %}
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm">
+
+    <div class="card-header">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-clock-history me-2"></i>
+
+            Recent Activity
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        {% include "shared/components/empty_state.html" with icon="bi bi-clock-history" title="No staff activity recorded yet." message="As this employee performs actions inside the ERP, their activity timeline will appear here." %}
+
+    </div>
+
+</div>

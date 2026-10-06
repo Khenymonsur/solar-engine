@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 class AssessmentSessionService:
     """
     Handles all Customer Assessment session operations.
@@ -52,13 +54,28 @@ class AssessmentSessionService:
         cls.save(request, assessment)
 
     @classmethod
-    def save_power(cls, request, data):
-
+    def save_power(
+            cls,
+            request,
+            data,
+    ):
         assessment = cls.get(request)
 
-        assessment["power"] = data
+        power_data = {}
 
-        cls.save(request, assessment)
+        for key, value in data.items():
+
+            if isinstance(value, Decimal):
+                power_data[key] = str(value)
+            else:
+                power_data[key] = value
+
+        assessment["power"] = power_data
+
+        cls.save(
+            request,
+            assessment,
+        )
 
     # --------------------------------------------------
     # Appliance Handling

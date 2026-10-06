@@ -1,0 +1,269 @@
+<div class="row">
+
+    <!-- Left Column -->
+
+    <div class="col-lg-4">
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-body">
+
+                <div class="row align-items-center">
+
+                    <div class="col-lg-8">
+
+                        <div class="d-flex align-items-center">
+
+                            <div class="rounded-circle bg-primary text-white
+                                        d-flex align-items-center
+                                        justify-content-center me-3"
+                                 style="width:70px;height:70px;">
+
+                                {{ staff_user.first_name|first }}
+                                {{ staff_user.last_name|first }}
+
+                            </div>
+
+                            <div>
+
+                                <h3 class="mb-1">
+
+                                    {{ staff_user.get_full_name|default:staff_user.username }}
+
+                                </h3>
+
+                                <div class="text-muted">
+
+                                    @{{ staff_user.username }}
+
+                                </div>
+
+                                <div class="mt-2">
+
+                                    {% if staff_user.is_active %}
+
+                                        <span class="badge bg-success">
+
+                                            Active
+
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge bg-danger">
+
+                                            Disabled
+
+                                        </span>
+
+                                    {% endif %}
+
+                                    {% for group in staff_user.groups.all %}
+
+                                        <span class="badge bg-primary">
+
+                                            {{ group.name }}
+
+                                        </span>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-4 text-lg-end">
+
+                        <div class="small text-muted">
+
+                            Last Login
+
+                        </div>
+
+                        <strong>
+
+                            {{ staff_user.last_login|default:"Never" }}
+
+                        </strong>
+
+                        <hr>
+
+                        <div class="small text-muted">
+
+                            Joined
+
+                        </div>
+
+                        <strong>
+
+                            {{ staff_user.date_joined|date:"d M Y" }}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card shadow-sm">
+
+            <div class="card-header">
+
+                <strong>
+
+                    Access Roles
+
+                </strong>
+
+            </div>
+
+            <div class="card-body">
+
+                {% for role in roles %}
+
+                    <span class="badge bg-primary me-1 mb-1">
+
+                        {{ role.name }}
+
+                    </span>
+
+                {% empty %}
+
+                    <span class="text-muted">
+
+                        No Roles Assigned
+
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Right Column -->
+
+    <div class="col-lg-8">
+
+        <div class="row mb-4">
+
+            <div class="col-md-3">
+
+                {% include "shared/components/metric_card.html" with title="Customers" value=customer_count %}
+
+            </div>
+
+            <div class="col-md-3">
+
+                {% include "shared/components/metric_card.html" with title="Assessments" value=assessment_count %}
+
+            </div>
+
+            <div class="col-md-3">
+
+                {% include "shared/components/metric_card.html" with title="Quotations" value=quotation_count %}
+
+            </div>
+
+            <div class="col-md-3">
+
+                {% include "shared/components/metric_card.html" with title="Roles" value=roles.count %}
+
+            </div>
+
+        </div>
+
+        <div class="card shadow-sm">
+
+            <div class="card-header">
+
+                <strong>
+
+                    Overview
+
+                </strong>
+
+            </div>
+
+            <table class="table mb-0">
+
+                <tr>
+
+                    <th width="180">
+
+                        Username
+
+                    </th>
+
+                    <td>
+
+                        {{ staff_user.username }}
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+
+                        Email
+
+                    </th>
+
+                    <td>
+
+                        {{ staff_user.email }}
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+
+                        Last Login
+
+                    </th>
+
+                    <td>
+
+                        {{ staff_user.last_login|default:"Never" }}
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+
+                        Joined
+
+                    </th>
+
+                    <td>
+
+                        {{ staff_user.date_joined }}
+
+                    </td>
+
+                </tr>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

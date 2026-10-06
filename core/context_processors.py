@@ -1,4 +1,8 @@
 from django.conf import settings
+from core.models import Notification
+
+
+
 
 def google_maps(request):
     return {
@@ -16,12 +20,12 @@ def session_timeout(request):
 from crm.models import SalesProfile
 
 
+
 def staff_context(request):
-    """
-    Provides the current staff role to all templates.
-    """
 
     role = None
+    staff_notifications = []
+    unread_notification_count = 0
 
     if request.user.is_authenticated:
 
@@ -30,7 +34,7 @@ def staff_context(request):
 
         elif SalesProfile.objects.filter(
             user=request.user,
-            active=True
+            active=True,
         ).exists():
             role = "sales"
 
@@ -47,6 +51,23 @@ def staff_context(request):
         else:
             role = "staff"
 
+        staff_notifications = (
+            Notification.objects
+            .filter(recipient=request.user)
+            .order_by("-created_at")[:6]
+        )
+
+        unread_notification_count = (
+            Notification.objects
+            .filter(
+                recipient=request.user,
+                is_read=False,
+            )
+            .count()
+        )
+
     return {
         "staff_role": role,
+        "staff_notifications": staff_notifications,
+        "unread_notification_count": unread_notification_count,
     }

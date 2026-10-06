@@ -237,3 +237,64 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 #-----------------------------------------------------
 
 GOOGLE_MAPS_API_KEY = env("GOOGLE_MAPS_API_KEY")
+
+# -----------------------------------------------------
+# Email Configuration
+# -----------------------------------------------------
+
+EMAIL_BACKEND = env(
+    "EMAIL_BACKEND",
+    default="django.core.mail.backends.console.EmailBackend",
+)
+
+EMAIL_HOST = env(
+    "EMAIL_HOST",
+    default="smtp.gmail.com",
+)
+
+EMAIL_PORT = env.int(
+    "EMAIL_PORT",
+    default=587,
+)
+
+EMAIL_USE_TLS = env.bool(
+    "EMAIL_USE_TLS",
+    default=True,
+)
+
+EMAIL_HOST_USER = env(
+    "EMAIL_HOST_USER",
+    default="",
+)
+
+EMAIL_HOST_PASSWORD = env(
+    "EMAIL_HOST_PASSWORD",
+    default="",
+)
+
+DEFAULT_FROM_EMAIL = env(
+    "DEFAULT_FROM_EMAIL",
+    default="Cloud Energy <no-reply@cloudenergy.com.ng>",
+)
+
+EMAIL_TIMEOUT = 20
+
+
+# -----------------------------------------------------
+# Application URL
+# -----------------------------------------------------
+
+SITE_URL = env(
+    "SITE_URL",
+    default="http://127.0.0.1:8000",
+).rstrip("/")
+
+
+# -----------------------------------------------------
+# Email Branding
+# -----------------------------------------------------
+
+EMAIL_LOGO_URL = env(
+    "EMAIL_LOGO_URL",
+    default=f"{SITE_URL}/static/images/Logo.png",
+)

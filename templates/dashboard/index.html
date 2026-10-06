@@ -58,14 +58,17 @@ Dashboard
 </div>
 
 <div class="row">
+{% url 'customers:list' as customers_url %}
+{% include "components/cards/metric_card.html" with title="Customers" value=customer_count icon="bi-people-fill" footer="Registered Customers" url=customers_url %}
 
-{% include "components/cards/metric_card.html" with title="Customers" value=customer_count icon="bi-people-fill" footer="Registered Customers" %}
 
-{% include "components/cards/metric_card.html" with title="Assessments" value=assessment_count icon="bi-clipboard-data" footer="Completed Projects" %}
+{% url 'audits:list' as assessments_url %}
+{% include "components/cards/metric_card.html" with title="Assessments" value=assessment_count icon="bi-clipboard-data" footer="Completed Projects" url=assessments_url %}
 
 {% include "components/cards/metric_card.html" with title="Equipment" value=equipment_count icon="bi-box-seam" footer="Products" %}
 
-{% include "components/cards/metric_card.html" with title="Reports" value=report_count icon="bi-file-earmark-pdf" footer="Generated PDFs" %}
+{% url 'reports:list' as reports_url %}
+{% include "components/cards/metric_card.html" with title="Reports" value=report_count icon="bi-file-earmark-pdf" footer="Generated PDFs" url=reports_url %}
 
 </div>
 

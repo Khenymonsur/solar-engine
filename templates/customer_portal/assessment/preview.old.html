@@ -1,0 +1,1084 @@
+{% extends "layouts/customer_base.html" %}
+
+{% block title %}
+Your Preliminary Solar Assessment
+{% endblock %}
+
+{% block customer_content %}
+
+<div class="container py-5">
+
+    <div class="card border-0 shadow-sm mb-5">
+
+        <div class="card-body text-center py-5">
+
+            <span class="badge bg-success px-3 py-2 mb-3">
+
+                CLIENT ENERGY AUDIT REPORT
+
+            </span>
+
+            <h1 class="display-5 fw-bold">
+
+                Preliminary Engineering Assessment
+
+            </h1>
+
+            <p class="lead text-muted mb-4">
+
+                This report summarises your current energy requirements,
+                existing power infrastructure and our preliminary engineering
+                recommendation.
+
+            </p>
+
+            <div class="row text-center mt-4">
+
+                <div class="col-md-4">
+
+                    <small class="text-muted">
+
+                        Generated
+
+                    </small>
+
+                    <h6>
+
+                        {% now "d M Y" %}
+
+                    </h6>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <small class="text-muted">
+
+                        Status
+
+                    </small>
+
+                    <h6>
+
+                        Preliminary Assessment
+
+                    </h6>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <small class="text-muted">
+
+                        Prepared For
+
+                    </small>
+
+                    <h6>
+
+                        {{ customer.full_name|default:"Prospective Customer" }}
+
+                    </h6>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-primary text-white">
+
+            <h5 class="mb-0">
+
+                <i class="bi bi-person-vcard me-2"></i>
+
+                Customer Summary
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <small class="text-muted">
+
+                        Customer
+
+                    </small>
+
+                    <h6>
+
+                        {{ customer.full_name }}
+
+                    </h6>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <small class="text-muted">
+
+                        Phone
+
+                    </small>
+
+                    <h6>
+
+                        {{ customer.phone }}
+
+                    </h6>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+
+                        State
+
+                    </small>
+
+                    <h6>
+
+                        {{ customer.state }}
+
+                    </h6>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+
+                        Property Type
+
+                    </small>
+
+                    <h6>
+
+                        {{ property.property_type }}
+
+                    </h6>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- Executive Summary -->
+    <!-- ========================================================= -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-dark text-white">
+
+            <h5 class="mb-0">
+
+                <i class="bi bi-clipboard2-data-fill me-2"></i>
+
+                Executive Summary
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <p class="mb-3">
+
+                Based on the information provided during your online assessment,
+                our preliminary engineering review indicates that your property
+                requires a solar power system capable of supplying approximately
+                <strong>{{ estimate.connected_load }} W</strong> of connected load
+                with an estimated daily energy demand of
+                <strong>{{ estimate.daily_energy }} kWh</strong>.
+
+            </p>
+
+            <p class="mb-0">
+
+                The recommended solution consists of an estimated
+
+                <strong>{{ estimate.recommended_inverter }} kVA</strong>
+
+                inverter,
+
+                <strong>{{ estimate.recommended_battery }} kWh</strong>
+
+                battery storage,
+
+                and approximately
+
+                <strong>{{ estimate.recommended_solar }} kW</strong>
+
+                of solar PV capacity.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <small>Connected Load</small>
+
+                    <h3>
+
+                        {{ estimate.connected_load }} W
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <small>Daily Energy</small>
+
+                    <h3>
+
+                        {{ estimate.daily_energy }} kWh
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <small>Recommended Inverter</small>
+
+                    <h3>
+
+                        {{ estimate.recommended_inverter }} kVA
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row mt-4 g-4">
+
+        <div class="col-md-6">
+
+            <div class="card border-success">
+
+                <div class="card-body">
+
+                    <small>
+
+                        Battery Storage
+
+                    </small>
+
+                    <h2>
+
+                        {{ estimate.recommended_battery }} kWh
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card border-warning">
+
+                <div class="card-body">
+
+                    <small>
+
+                        Solar Capacity
+
+                    </small>
+
+                    <h2>
+
+                        {{ estimate.recommended_solar }} kW
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ========================================================= -->
+    <!-- Current Energy Profile -->
+    <!-- ========================================================= -->
+
+    <div class="card shadow-sm border-0 mt-5">
+
+        <div class="card-header bg-primary text-white">
+
+            <h5 class="mb-0">
+
+                <i class="bi bi-lightning-charge-fill me-2"></i>
+
+                Current Energy Profile
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <!-- Grid -->
+
+                <div class="col-md-3 mb-4">
+
+                    <small class="text-muted">
+
+                        Grid Connection
+
+                    </small>
+
+                    <h6>
+
+                        {% if assessment.grid_available %}
+
+                            <span class="badge bg-success">
+
+                                Connected
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-secondary">
+
+                                Not Connected
+
+                            </span>
+
+                        {% endif %}
+
+                    </h6>
+
+                </div>
+
+                <!-- Generator -->
+
+                <div class="col-md-3 mb-4">
+
+                    <small class="text-muted">
+
+                        Generator
+
+                    </small>
+
+                    <h6>
+
+                        {% if assessment.generator_available %}
+
+                            Yes
+
+                        {% else %}
+
+                            No
+
+                        {% endif %}
+
+                    </h6>
+
+                </div>
+
+                <!-- Existing Inverter -->
+
+                <div class="col-md-3 mb-4">
+
+                    <small class="text-muted">
+
+                        Existing Inverter
+
+                    </small>
+
+                    <h6>
+
+                        {{ assessment.existing_inverter_capacity|default:"Not Provided" }}
+
+                    </h6>
+
+                </div>
+
+                <!-- Existing Battery -->
+
+                <div class="col-md-3 mb-4">
+
+                    <small class="text-muted">
+
+                        Existing Battery
+
+                    </small>
+
+                    <h6>
+
+                        {{ assessment.existing_battery_capacity|default:"Not Provided" }}
+
+                    </h6>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ========================================================= -->
+    <!-- Current Energy Costs -->
+    <!-- ========================================================= -->
+
+    <div class="card shadow-sm border-0 mt-4">
+
+        <div class="card-header bg-success text-white">
+
+            <h5 class="mb-0">
+
+                <i class="bi bi-cash-stack me-2"></i>
+
+                Current Energy Costs
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-3">
+
+                    <small class="text-muted">
+
+                        Electricity
+
+                    </small>
+
+                    <h5>
+
+                        ₦{{ assessment.monthly_grid_cost|default:"Not Available" }}
+
+                    </h5>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <small class="text-muted">
+
+                        Fuel
+
+                    </small>
+
+                    <h5>
+
+                        ₦{{ assessment.monthly_fuel_cost|default:"Not Available" }}
+
+                    </h5>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <small class="text-muted">
+
+                        Maintenance
+
+                    </small>
+
+                    <h5>
+
+                        ₦{{ assessment.monthly_generator_maintenance|default:"Not Available" }}
+
+                    </h5>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <small class="text-muted">
+
+                        Generator Usage
+
+                    </small>
+
+                    <h5>
+
+                        {{ assessment.daily_generator_hours|default:"Not Available" }}
+
+                    </h5>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ========================================================= -->
+    <!-- Engineering Recommendation -->
+    <!-- ========================================================= -->
+
+    <div class="card shadow-sm border-0 mt-4">
+
+        <div class="card-header bg-info text-white">
+
+            <h5 class="mb-0">
+
+                <i class="bi bi-tools me-2"></i>
+
+                Engineering Recommendation
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row text-center">
+
+                <div class="col-md-4">
+
+                    <i class="bi bi-cpu fs-1 text-primary"></i>
+
+                    <h6 class="mt-3">
+
+                        Recommended Inverter
+
+                    </h6>
+
+                    <h3>
+
+                        {{ estimate.recommended_inverter }} kVA
+
+                    </h3>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <i class="bi bi-battery-charging fs-1 text-success"></i>
+
+                    <h6 class="mt-3">
+
+                        Battery Storage
+
+                    </h6>
+
+                    <h3>
+
+                        {{ estimate.recommended_battery }} kWh
+
+                    </h3>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <i class="bi bi-brightness-high-fill fs-1 text-warning"></i>
+
+                    <h6 class="mt-3">
+
+                        Solar PV
+
+                    </h6>
+
+                    <h3>
+
+                        {{ estimate.recommended_solar }} kW
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+    <!-- ========================================================= -->
+    <!-- Energy Challenges -->
+    <!-- ========================================================= -->
+
+    <div class="card shadow-sm border-0 mt-4">
+
+        <div class="card-header bg-warning">
+
+            <h5 class="mb-0">
+
+                <i class="bi bi-exclamation-triangle me-2"></i>
+
+                Energy Challenges
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+
+                        Power Outages
+
+                    </small>
+
+                    <h6>
+
+                        {{ assessment.outage_frequency|default:"Not Specified" }}
+
+                    </h6>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+
+                        Average Duration
+
+                    </small>
+
+                    <h6>
+
+                        {{ assessment.outage_duration|default:"Not Specified" }}
+
+                    </h6>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <small class="text-muted">
+
+                Customer Goal
+
+            </small>
+
+            <h6>
+
+                {{ assessment.project_goal|default:"Not Specified" }}
+
+            </h6>
+
+            <hr>
+
+            <small class="text-muted">
+
+                Additional Notes
+
+            </small>
+
+            <p class="mb-0">
+
+                {{ assessment.pain_points|default:"No additional comments provided." }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="card mt-5 shadow">
+        <div class="card-body text-center">
+            <h3>
+                Estimated Investment
+            </h3>
+            <h1 class="display-6">
+
+                ₦{{ estimate.budget.low|floatformat:0 }}
+
+                -
+
+                ₦{{ estimate.budget.high|floatformat:0 }}
+
+            </h1>
+
+            <hr>
+
+            <p>
+                This is a preliminary estimate based on
+                the information you supplied.
+            </p>
+
+            {% if request.user.is_authenticated %}
+                <p>
+                    Your preliminary assessment is ready.
+                    Click below to submit it to our engineering team.
+                </p>
+
+                <form method="post"
+                      action="{% url 'customer_portal:submit-assessment' %}">
+
+                    {% csrf_token %}
+
+                    <button type="submit"
+                            class="btn btn-success btn-lg">
+
+                        Submit Assessment
+
+                    </button>
+
+                </form>
+
+            {% else %}
+
+                <p>
+
+                    Create a free account to receive:
+
+                </p>
+
+                <ul class="list-unstyled">
+
+                    <li>✔ Full Engineering Design</li>
+                    <li>✔ Bill of Materials</li>
+                    <li>✔ Official Quotation</li>
+                    <li>✔ Engineer Consultation</li>
+                    <li>✔ Project Tracking</li>
+
+                </ul>
+
+                <div class="mt-4">
+
+                    <a href="{% url 'customer_portal:register' %}"
+                       class="btn btn-success btn-lg">
+
+                        Create Free Account
+
+                    </a>
+
+                    <a href="{% url 'customer_portal:login' %}"
+                       class="btn btn-outline-primary btn-lg">
+
+                        Login
+
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- Engineering Note -->
+    <!-- ========================================================= -->
+
+    <div class="alert alert-light border mt-4">
+
+        <h6>
+            <i class="bi bi-info-circle-fill me-2"></i>
+            Engineering Note
+        </h6>
+
+        <p class="mb-0">
+            This report represents a preliminary engineering assessment
+            based on the information supplied during your online energy audit.
+
+            Final equipment selection, cable sizing, structural assessment,
+            installation layout and project cost will be confirmed after
+            a physical site inspection by our engineering team.
+        </p>
+
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- Next Steps -->
+    <!-- ========================================================= -->
+
+    <div class="card shadow-sm border-0 mt-5">
+
+        <div class="card-header">
+
+            <h5 class="mb-0">
+
+                Next Steps
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row text-center">
+
+                <div class="col">
+
+                    <i class="bi bi-check-circle-fill text-success fs-3"></i>
+
+                    <p class="mt-2">
+
+                        Assessment Complete
+
+                    </p>
+
+                </div>
+
+                <div class="col">
+
+                    <i class="bi bi-search fs-3 text-primary"></i>
+
+                    <p class="mt-2">
+
+                        Engineering Review
+
+                    </p>
+
+                </div>
+
+                <div class="col">
+
+                    <i class="bi bi-file-earmark-text fs-3 text-warning"></i>
+
+                    <p class="mt-2">
+
+                        Quotation
+
+                    </p>
+
+                </div>
+
+                <div class="col">
+
+                    <i class="bi bi-tools fs-3 text-info"></i>
+
+                    <p class="mt-2">
+
+                        Installation
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- Financial Impact Analysis -->
+    <!-- ========================================================= -->
+
+    <div class="card shadow-sm border-0 mt-5">
+
+        <div class="card-header bg-success text-white">
+
+            <h5 class="mb-0">
+
+                <i class="bi bi-graph-up-arrow me-2"></i>
+
+                Financial Impact Analysis
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="alert alert-success">
+
+                <strong>Good news!</strong>
+
+                Based on your current energy profile, this assessment will soon
+                estimate your potential financial savings after switching to solar.
+
+            </div>
+
+            <div class="row text-center">
+
+                <div class="col-md-4 mb-4">
+
+                    <small class="text-muted">
+
+                        Current Monthly Energy Cost
+
+                    </small>
+
+                    <h3>
+
+                        Coming Soon
+
+                    </h3>
+
+                </div>
+
+                <div class="col-md-4 mb-4">
+
+                    <small class="text-muted">
+
+                        Estimated Monthly Savings
+
+                    </small>
+
+                    <h3>
+
+                        Coming Soon
+
+                    </h3>
+
+                </div>
+
+                <div class="col-md-4 mb-4">
+
+                    <small class="text-muted">
+
+                        Estimated Annual Savings
+
+                    </small>
+
+                    <h3>
+
+                        Coming Soon
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="row text-center">
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+
+                        Estimated Payback Period
+
+                    </small>
+
+                    <h4>
+
+                        Coming Soon
+
+                    </h4>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+
+                        Estimated CO₂ Reduction
+
+                    </small>
+
+                    <h4>
+
+                        Coming Soon
+
+                    </h4>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="text-center text-muted mt-5 mb-4">
+
+        <hr>
+
+        <p class="mb-1 fw-semibold">
+
+            Cloud Energy Photoelectric Ltd.
+
+        </p>
+
+        <p class="small mb-1">
+
+            Professional Solar Engineering • Energy Audits • Installation • Maintenance
+
+        </p>
+
+        <p class="small">
+
+            Thank you for completing your Client Energy Audit.
+            Our engineering team looks forward to helping you achieve reliable and sustainable energy.
+
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

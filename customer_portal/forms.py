@@ -81,6 +81,39 @@ class AssessmentStepOneForm(forms.Form):
         ),
     )
 
+    def clean(self):
+
+        cleaned_data = super().clean()
+
+        if (
+                cleaned_data.get("generator_available") == "yes"
+                and not cleaned_data.get("generator_capacity")
+        ):
+            self.add_error(
+                "generator_capacity",
+                "Please enter the generator capacity."
+            )
+
+        if (
+                cleaned_data.get("has_existing_inverter") == "yes"
+                and not cleaned_data.get("existing_inverter_capacity")
+        ):
+            self.add_error(
+                "existing_inverter_capacity",
+                "Please enter the inverter capacity."
+            )
+
+        if (
+                cleaned_data.get("has_existing_battery") == "yes"
+                and not cleaned_data.get("existing_battery_capacity")
+        ):
+            self.add_error(
+                "existing_battery_capacity",
+                "Please enter the battery capacity."
+            )
+
+        return cleaned_data
+
 
 
 class AssessmentStepTwoForm(forms.Form):
@@ -220,37 +253,171 @@ class AssessmentStepThreeForm(forms.Form):
     YES_NO = [
 
         ("yes", "Yes"),
-
         ("no", "No"),
-
     ]
 
     POWER_SCOPE = [
 
         ("full", "Entire Building"),
-
         ("essential", "Essential Appliances Only"),
-
     ]
 
     grid_available = forms.ChoiceField(
 
         label="Do you currently have grid electricity?",
-
         choices=YES_NO,
-
         widget=forms.RadioSelect,
 
     )
 
+
     generator_available = forms.ChoiceField(
 
         label="Do you currently use a generator?",
-
         choices=YES_NO,
+        widget=forms.RadioSelect(
+            attrs={
+                "class": "generator-radio",
+            }
+        ),
 
+    )
+
+    has_existing_solar = forms.ChoiceField(
+
+        label="Do you already have a solar system installed?",
+        choices=YES_NO,
         widget=forms.RadioSelect,
 
+    )
+
+    has_existing_inverter = forms.ChoiceField(
+
+        label="Do you currently use an inverter?",
+        choices=YES_NO,
+        widget=forms.RadioSelect(
+            attrs={
+                "class": "inverter-radio",
+            }
+        ),
+
+    )
+
+    has_existing_battery = forms.ChoiceField(
+
+        label="Do you currently use batteries?",
+        choices=YES_NO,
+        widget=forms.RadioSelect(
+            attrs={
+                "class": "battery-radio",
+            }
+        ),
+
+    )
+
+    generator_capacity = forms.DecimalField(
+
+        required=False,
+        max_digits=6,
+        decimal_places=2,
+        label="Generator Capacity (kVA)",
+        widget=forms.NumberInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "e.g. 15",
+            }
+        ),
+    )
+
+    existing_inverter_capacity = forms.DecimalField(
+
+        required=False,
+        max_digits=6,
+        decimal_places=2,
+        label="Existing Inverter Capacity (kVA)",
+        widget=forms.NumberInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "e.g. 5",
+            }
+        ),
+    )
+
+    existing_battery_capacity = forms.DecimalField(
+
+        required=False,
+        max_digits=8,
+        decimal_places=2,
+        label="Existing Battery Capacity (kWh)",
+        widget=forms.NumberInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "e.g. 10",
+            }
+        ),
+    )
+
+    monthly_grid_cost = forms.DecimalField(
+        required=False,
+        max_digits=12,
+        decimal_places=2,
+        label="Average Monthly Electricity Bill (₦)",
+        widget=forms.NumberInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "e.g. 35000",
+            }
+        ),
+    )
+
+    monthly_fuel_cost = forms.DecimalField(
+        required=False,
+        max_digits=12,
+        decimal_places=2,
+        min_value=0,
+        label="Average Monthly Fuel / Diesel Cost (₦)",
+        widget=forms.NumberInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "e.g. 80000",
+                "min": "0",
+                "step": "0.01",
+            }
+        ),
+    )
+
+    monthly_generator_maintenance = forms.DecimalField(
+        required=False,
+        max_digits=12,
+        decimal_places=2,
+        min_value=0,
+        label="Average Monthly Generator Maintenance (₦)",
+        widget=forms.NumberInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Optional",
+                "min": "0",
+                "step": "0.01",
+            }
+        ),
+    )
+
+    daily_generator_hours = forms.DecimalField(
+        required=False,
+        max_digits=4,
+        decimal_places=1,
+        min_value=0,
+        max_value=24,
+        label="Average Generator Usage (Hours per Day)",
+        widget=forms.NumberInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Optional, e.g. 6",
+                "min": "0",
+                "max": "24",
+                "step": "0.5",
+            }
+        ),
     )
 
     BACKUP_OPTIONS = [
@@ -275,12 +442,63 @@ class AssessmentStepThreeForm(forms.Form):
     power_scope = forms.ChoiceField(
 
         label="Which appliances should the system power?",
-
         choices=POWER_SCOPE,
-
         widget=forms.RadioSelect,
-
     )
+
+    def clean(self):
+
+        cleaned_data = super().clean()
+
+        if (
+                cleaned_data.get("generator_available") == "yes"
+                and not cleaned_data.get("generator_capacity")
+        ):
+            self.add_error(
+                "generator_capacity",
+                "Please enter the generator capacity.",
+            )
+
+        if (
+                cleaned_data.get("has_existing_inverter") == "yes"
+                and not cleaned_data.get("existing_inverter_capacity")
+        ):
+            self.add_error(
+                "existing_inverter_capacity",
+                "Please enter the inverter capacity.",
+            )
+
+        if (
+                cleaned_data.get("has_existing_battery") == "yes"
+                and not cleaned_data.get("existing_battery_capacity")
+        ):
+            self.add_error(
+                "existing_battery_capacity",
+                "Please enter the battery capacity.",
+            )
+
+        # Grid Electricity Bill
+        if (
+                cleaned_data.get("grid_available") == "yes"
+                and not cleaned_data.get("monthly_grid_cost")
+        ):
+            self.add_error(
+                "monthly_grid_cost",
+                "Please enter your average monthly electricity bill.",
+            )
+
+        # Generator Fuel
+        if (
+                cleaned_data.get("generator_available") == "yes"
+                and not cleaned_data.get("monthly_fuel_cost")
+        ):
+            self.add_error(
+                "monthly_fuel_cost",
+                "Please enter your average monthly fuel / diesel cost.",
+            )
+
+
+        return cleaned_data
 
 
 

@@ -2,8 +2,9 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 
-User = get_user_model()
 
+
+User = get_user_model()
 
 
 class StaffUserCreateForm(forms.ModelForm):
@@ -126,3 +127,21 @@ class StaffUserForm(forms.ModelForm):
                 attrs={"class": "form-control"}
             ),
         }
+
+
+
+
+
+
+class StaffRoleForm(forms.ModelForm):
+
+    groups = forms.ModelMultipleChoiceField(
+        queryset=Group.objects.order_by("name"),
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+        label="Access Roles",
+    )
+
+    class Meta:
+        model = User
+        fields = ["groups"]
