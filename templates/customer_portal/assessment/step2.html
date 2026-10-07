@@ -19,7 +19,7 @@ Energy Assessment | Your Property
     <!-- LEFT: PROPERTY FORM -->
     <!-- ================================================= -->
 
-    <div class="col-lg-8">
+   <div class="col-lg-7 col-xl-8">
 
         <div class="customer-card h-100">
 
@@ -306,7 +306,7 @@ Energy Assessment | Your Property
     <!-- RIGHT: PROPERTY INFORMATION -->
     <!-- ================================================= -->
 
-    <div class="col-lg-4">
+    <div class="col-lg-5 col-xl-4">
 
         <div class="property-info-card sticky-lg-top">
 
@@ -461,7 +461,8 @@ Energy Assessment | Your Property
 </div>
 
 
-    <style>
+
+<style>
     .property-info-card {
         background: #ffffff;
         border: 1px solid #edf0f2;
@@ -599,6 +600,313 @@ Energy Assessment | Your Property
         }
 
     }
+
+/* =====================================================
+   STEP 2 RESPONSIVE DESIGN
+   ===================================================== */
+
+
+/* -----------------------------
+   Large tablets / small laptops
+   ----------------------------- */
+
+@media (max-width: 1199.98px) {
+
+    .customer-card .card-body {
+        padding: 28px !important;
+    }
+
+    .property-info-card {
+        padding: 24px;
+    }
+
+    .property-info-header h4 {
+        font-size: 20px;
+    }
+
+    .property-benefit {
+        gap: 12px;
+    }
+
+    .benefit-icon {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        font-size: 18px;
+    }
+
+}
+
+
+/* =====================================================
+   TABLET PORTRAIT
+   ===================================================== */
+
+@media (max-width: 991.98px) {
+
+    .container {
+        max-width: 100%;
+    }
+
+    .customer-card {
+        border-radius: 18px;
+    }
+
+    .customer-card .card-body {
+        padding: 28px !important;
+    }
+
+
+    /* Property info goes underneath form */
+
+    .property-info-card {
+        position: static !important;
+        margin-top: 4px;
+        border-radius: 18px;
+    }
+
+
+    /* Make info card content more compact */
+
+    .property-benefit {
+        padding: 15px 0;
+    }
+
+
+    /* Map */
+
+    #property-map {
+        height: 300px !important;
+    }
+
+
+    /* Current location button */
+
+    #current-location-btn {
+        min-height: 46px;
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 767.98px) {
+
+    /* Main container */
+
+    .container.py-4 {
+        padding-left: 14px;
+        padding-right: 14px;
+        padding-top: 16px !important;
+    }
+
+
+    /* Main card */
+
+    .customer-card {
+        border-radius: 16px;
+    }
+
+    .customer-card .card-body {
+        padding: 20px !important;
+    }
+
+
+    /* Page heading */
+
+    .customer-card h1,
+    .customer-card h2 {
+        font-size: 28px;
+        line-height: 1.2;
+    }
+
+
+    /* Force all form columns full width */
+
+    .customer-card .col-md-6 {
+        width: 100%;
+    }
+
+
+    /* Inputs */
+
+    .customer-card input,
+    .customer-card select,
+    .customer-card textarea {
+        min-height: 48px;
+        font-size: 16px;
+    }
+
+
+    /* Labels */
+
+    .customer-card .form-label {
+        font-size: 15px;
+        margin-bottom: 7px;
+    }
+
+
+    /* Address suggestion dropdown */
+
+    #address-suggestions {
+        width: 100% !important;
+        max-height: 220px !important;
+        overflow-y: auto;
+        left: 0 !important;
+        right: 0 !important;
+    }
+
+    #address-suggestions .list-group-item {
+        padding: 12px 14px;
+        font-size: 14px;
+        line-height: 1.4;
+        white-space: normal;
+    }
+
+
+    /* Current location button */
+
+    #current-location-btn {
+        width: 100%;
+        min-height: 48px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    /* Map */
+
+    #property-map {
+        height: 260px !important;
+        border-radius: 14px !important;
+    }
+
+
+    /* Map instruction */
+
+    #map-help {
+        align-items: flex-start !important;
+        padding: 12px;
+    }
+
+    #map-help small {
+        line-height: 1.4;
+    }
+
+
+    /* Coordinates */
+
+    .coordinate-box {
+        padding: 16px;
+    }
+
+    .coordinate-box .col-md-4 {
+        text-align: left !important;
+        margin-bottom: 12px;
+    }
+
+    .coordinate-box .col-md-4:last-child {
+        margin-bottom: 0;
+    }
+
+
+    /* Information panel */
+
+    .property-info-card {
+        padding: 20px;
+        border-radius: 16px;
+    }
+
+    .property-info-header {
+        align-items: center;
+    }
+
+    .property-info-header h4 {
+        font-size: 20px;
+    }
+
+    .property-info-card > p {
+        font-size: 14px;
+    }
+
+
+    /* Tip */
+
+    .property-tip {
+        padding: 15px;
+    }
+
+
+    /* Benefits */
+
+    .property-benefit {
+        padding: 14px 0;
+    }
+
+    .property-benefit h6 {
+        font-size: 15px;
+    }
+
+    .property-benefit p {
+        font-size: 13px;
+    }
+
+
+    /* Note */
+
+    .property-note {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+   ===================================================== */
+
+@media (max-width: 479.98px) {
+
+    .container.py-4 {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+
+    .customer-card .card-body {
+        padding: 16px !important;
+    }
+
+
+    .customer-card h1,
+    .customer-card h2 {
+        font-size: 24px;
+    }
+
+
+    #property-map {
+        height: 230px !important;
+    }
+
+
+    .property-info-card {
+        padding: 16px;
+    }
+
+
+    .benefit-icon {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+    }
+
+}
+
 </style>
 
 {% endblock customer_content %}
